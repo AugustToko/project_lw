@@ -67,7 +67,7 @@ class _NavBarButtonState extends State<NavBarButton>
           child: Icon(
             widget.data.icon,
             size: 24,
-            color: widget.isSelected ? Colors.white : Colors.white.withOpacity(0.6),
+            color: widget.isSelected ? Colors.white : Colors.grey,
           ),
         ),
         //Add some hz spacing

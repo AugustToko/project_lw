@@ -15,6 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:project_lw/main.dart';
+import 'package:project_lw/pages/library_page.dart';
 import 'package:project_lw/utils/lw_theme_utils.dart';
 import 'package:project_lw/widget/navbar/navbar.dart';
 
@@ -39,13 +40,13 @@ class MainPage extends StatefulWidget {
 class _IndexState extends State<MainPage>
     with WidgetsBindingObserver, SingleTickerProviderStateMixin {
   final _navBarItems = <NavBarItemData>[
-    NavBarItemData('首页', LineAwesomeIcons.home, 110, Color(0xff01b87d)),
-    NavBarItemData('创意工坊', LineAwesomeIcons.archive, 110, Color(0xff594ccf)),
+    NavBarItemData('内容库', LineAwesomeIcons.home, 110, Color(0xff01b87d)),
+    NavBarItemData('社区', LineAwesomeIcons.archive, 110, Color(0xff594ccf)),
     NavBarItemData('设置', LineAwesomeIcons.user, 105, Color(0xfff2873f)),
   ];
 
   final pages = <Widget>[
-    Container(),
+    LibraryPage(),
     Container(),
     Container(),
   ];

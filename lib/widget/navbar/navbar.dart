@@ -12,6 +12,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:project_lw/utils/lw_theme_utils.dart';
 import 'navbar_button.dart';
 
 class NavBar extends StatelessWidget {
@@ -40,7 +41,7 @@ class NavBar extends StatelessWidget {
     }).toList();
 
     final body = Container(
-      height: 65,
+      height: LWThemeUtil.navBarHeight,
       decoration: BoxDecoration(
         // navBar 背景颜色
         color: Theme.of(context)

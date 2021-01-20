@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,6 +9,11 @@ final methodChannel = MethodChannel('lingyun_lw_channel_1');
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  if (kReleaseMode) GestureBinding.instance.resamplingEnabled = true;
+
   runApp(MyApp());
 }
 
@@ -149,10 +156,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      theme: lightTheme,
+      darkTheme: darkTheme,
       home: SplashPage.buildMe(),
     );
   }

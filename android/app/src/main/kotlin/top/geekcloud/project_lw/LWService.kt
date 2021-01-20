@@ -136,7 +136,7 @@ class LWService : WallpaperService() {
 //            myWebView!!.addJavascriptInterface(JSInterface(), "androidWallpaperInterface")
 //            myWebView!!.loadUrl("file:///android_asset/demo1/index.html")
 
-            myWebView!!.loadUrl("https://christmasexperiments.com/")
+            myWebView!!.loadUrl("https://www.uberviz.io/viz/splice/")
         }
 
         override fun onDestroy() {
