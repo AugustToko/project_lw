@@ -3,7 +3,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:project_lw/entity/center/data_center.dart';
 import 'package:project_lw/pages/splash_page.dart';
+import 'package:provider/provider.dart';
 
 final methodChannel = MethodChannel('lingyun_lw_channel_1');
 
@@ -14,7 +16,12 @@ void main() {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   if (kReleaseMode) GestureBinding.instance.resamplingEnabled = true;
 
-  runApp(MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<DataCenter>(create: (_) => DataCenter())
+    ],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

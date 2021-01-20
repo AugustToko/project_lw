@@ -22,11 +22,12 @@ import 'package:project_lw/widget/navbar/navbar.dart';
 /// [MainPage]
 /// 仅带有一个 BottomNavigationBar
 class MainPage extends StatefulWidget {
-
   static void push(final BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return MainPage._();
-    },));
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context) {
+        return MainPage._();
+      },
+    ));
   }
 
   MainPage._();

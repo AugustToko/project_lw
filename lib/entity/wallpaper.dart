@@ -10,12 +10,26 @@ enum WallpaperType {
 }
 
 class Wallpaper {
-  final WallpaperType wallpaperType;
+  static const TABLE = 'wallpaper';
+
+  static const CREATE_TABLE = "CREATE TABLE $TABLE("
+      "id TEXT PRIMARY KEY, "
+      "wallpaperType INTEGER, "
+      "name TEXT, "
+      "description TEXT, "
+      "author TEXT, "
+      "thumbnail TEXT, "
+      "versionCode INTEGER,"
+      "versionName TEXT,"
+      "path TEXT"
+      ")";
+
   final String id;
+  final WallpaperType wallpaperType;
   final String name;
   final String description;
   final String author;
-  final String thumbnail;
+  final List<String> thumbnail;
   final int versionCode;
   final String versionName;
 
@@ -46,42 +60,50 @@ class Wallpaper {
       this.versionName,
       this.path});
 
-  factory Wallpaper.fromMap(dynamic map) {
-    if (null == map) return null;
-    var temp;
-    return Wallpaper(
-      wallpaperType: null == (temp = map['wallpaperType'])
-          ? null
-          : (temp is num
-              ? WallpaperType.values[temp.toInt()]
-              : WallpaperType.values[int.tryParse(temp)]),
-      id: map['id']?.toString(),
-      name: map['name']?.toString(),
-      description: map['description']?.toString(),
-      author: map['author']?.toString(),
-      thumbnail: map['thumbnail']?.toString(),
-      versionCode: null == (temp = map['versionCode'])
-          ? null
-          : (temp is num ? temp.toInt() : int.tryParse(temp)),
-      versionName: map['versionName']?.toString(),
-      path: map['path']?.toString(),
+  factory Wallpaper.fromMap(Map<String, dynamic> map) {
+    return new Wallpaper(
+      id: map['id'] as String,
+      wallpaperType: map['wallpaperType'] as WallpaperType,
+      name: map['name'] as String,
+      description: map['description'] as String,
+      author: map['author'] as String,
+      thumbnail: map['thumbnail'] as List<String>,
+      versionCode: map['versionCode'] as int,
+      versionName: map['versionName'] as String,
+      path: map['path'] as String,
     );
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      'wallpaperType': wallpaperType?.index,
-      'id': id,
-      'name': name,
-      'description': description,
-      'author': author,
-      'thumbnail': thumbnail,
-      'versionCode': versionCode,
-      'versionName': versionName,
-      'path': path,
+    return <String, dynamic>{
+      'id': this.id,
+      'wallpaperType': this.wallpaperType.index,
+      'name': this.name,
+      'description': this.description,
+      'author': this.author,
+      'thumbnail': this.thumbnail,
+      'versionCode': this.versionCode,
+      'versionName': this.versionName,
+      'path': this.path,
     };
   }
 
+  /// ```json
+  /// {
+  ///   "id": "1",
+  ///   "wallpaperType": 0,
+  ///   "name": "TEST1",
+  ///   "description": "description",
+  ///   "author": "author",
+  ///   "thumbnail": [
+  ///     "asd",
+  ///     "asdasd"
+  ///   ],
+  ///   "versionCode": 1,
+  ///   "versionName": "Fuck",
+  ///   "path": "http://fff.cmiscm.com/#!/section/cylinder"
+  /// }
+  /// ```
   Map<String, dynamic> toJson() {
     return toMap();
   }
@@ -90,4 +112,16 @@ class Wallpaper {
     return Wallpaper.fromMap(map);
   }
 
+  @override
+  String toString() {
+    return 'Wallpaper{id: $id, wallpaperType: $wallpaperType, name: $name, description: $description, author: $author, thumbnail: $thumbnail, versionCode: $versionCode, versionName: $versionName, path: $path}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Wallpaper && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }
