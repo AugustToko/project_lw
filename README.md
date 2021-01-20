@@ -2,4 +2,4 @@
 
 Web View Video wallpaper.
 
-<img src="https://raw.githubusercontent.com/AugustToko/project_lw/master/screenshots/demo.gif">
+<img src="https://github.com/AugustToko/project_lw/blob/master/screenshots/demo.gif?raw=true">
