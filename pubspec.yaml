@@ -20,6 +20,9 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.7.0 <3.0.0"
 
+#dependencies_override:
+#  tar: ^0.2.0-nullsafety
+
 dependencies:
   flutter:
     sdk: flutter
@@ -43,6 +46,9 @@ dependencies:
       url: 'https://github.com/AugustToko/lingyun_widget.git'
       ref: '0.0.3'
 
+  es_compression: ^0.9.9
+  archive: ^2.0.13
+  file_utils: ^0.1.4
 
 dev_dependencies:
   flutter_test:

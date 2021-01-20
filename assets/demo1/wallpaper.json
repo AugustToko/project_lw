@@ -2,13 +2,14 @@
   "id": "1",
   "wallpaperType": 0,
   "name": "TEST1",
-  "description": "None",
+  "description": "这是一个测试用的壁纸",
   "author": "August",
-  "thumbnail": [
-    "asd",
-    "asdasd"
+  "thumbnails": [
+    "thumbnail1.webp",
+    "thumbnail2.webp",
+    "thumbnail3.webp"
   ],
   "versionCode": 1,
   "versionName": "1.0",
-  "path": "trailer.map4"
+  "path": "trailer.mp4"
 }

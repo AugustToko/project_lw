@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 enum WallpaperType {
   /// HTML5 - CSS -JS 或 WEB URL
   HTML,
@@ -6,7 +8,10 @@ enum WallpaperType {
   VIDEO,
 
   /// 通常为 AE lottie 动画
-  VIEW
+  VIEW,
+
+  /// 图片
+  IMAGE,
 }
 
 class Wallpaper {
@@ -18,7 +23,7 @@ class Wallpaper {
       "name TEXT, "
       "description TEXT, "
       "author TEXT, "
-      "thumbnail TEXT, "
+      "thumbnails TEXT, "
       "versionCode INTEGER,"
       "versionName TEXT,"
       "path TEXT"
@@ -29,7 +34,7 @@ class Wallpaper {
   final String name;
   final String description;
   final String author;
-  final List<String> thumbnail;
+  final List<String> thumbnails;
   final int versionCode;
   final String versionName;
 
@@ -44,21 +49,22 @@ class Wallpaper {
       this.name,
       this.description,
       this.author,
-      this.thumbnail,
+      this.thumbnails,
       this.versionCode,
       this.versionName,
       this.path);
 
-  const Wallpaper(
-      {this.id,
-      this.wallpaperType,
-      this.name,
-      this.description,
-      this.author,
-      this.thumbnail,
-      this.versionCode,
-      this.versionName,
-      this.path});
+  const Wallpaper({
+    this.id,
+    this.wallpaperType,
+    this.name,
+    this.description,
+    this.author,
+    this.thumbnails,
+    this.versionCode,
+    this.versionName,
+    this.path,
+  });
 
   factory Wallpaper.fromMap(Map<String, dynamic> map) {
     return new Wallpaper(
@@ -67,7 +73,7 @@ class Wallpaper {
       name: map['name'] as String,
       description: map['description'] as String,
       author: map['author'] as String,
-      thumbnail: map['thumbnail'] as List<String>,
+      thumbnails: json.decode(map['thumbnails']) as List<String>,
       versionCode: map['versionCode'] as int,
       versionName: map['versionName'] as String,
       path: map['path'] as String,
@@ -81,7 +87,7 @@ class Wallpaper {
       'name': this.name,
       'description': this.description,
       'author': this.author,
-      'thumbnail': this.thumbnail,
+      'thumbnails': json.encode(this.thumbnails),
       'versionCode': this.versionCode,
       'versionName': this.versionName,
       'path': this.path,
@@ -95,7 +101,7 @@ class Wallpaper {
   ///   "name": "TEST1",
   ///   "description": "description",
   ///   "author": "author",
-  ///   "thumbnail": [
+  ///   "thumbnails": [
   ///     "asd",
   ///     "asdasd"
   ///   ],
@@ -114,7 +120,7 @@ class Wallpaper {
 
   @override
   String toString() {
-    return 'Wallpaper{id: $id, wallpaperType: $wallpaperType, name: $name, description: $description, author: $author, thumbnail: $thumbnail, versionCode: $versionCode, versionName: $versionName, path: $path}';
+    return 'Wallpaper{id: $id, wallpaperType: $wallpaperType, name: $name, description: $description, author: $author, thumbnails: $thumbnails, versionCode: $versionCode, versionName: $versionName, path: $path}';
   }
 
   @override
