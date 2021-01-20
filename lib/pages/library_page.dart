@@ -1,12 +1,17 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:project_lw/misc/const.dart';
+import 'package:project_lw/entity/center/data_center.dart';
+import 'package:project_lw/entity/wallpaper.dart';
 import 'package:project_lw/utils/lw_theme_utils.dart';
 import 'package:project_lw/utils/native_tools.dart';
 import 'package:project_lw/utils/shared_prefs.dart';
 import 'package:project_lw/utils/spf_keys.dart';
+import 'package:project_lw/utils/wallpaper_tools.dart';
+import 'package:provider/provider.dart';
 
 class LibraryPage extends StatefulWidget {
   @override
@@ -34,57 +39,92 @@ class _LibraryPageState extends State<LibraryPage> {
                       '内容库',
                       style: LWThemeUtil.pageTitleStyle(context),
                     ),
-                    Text('120张')
+                    const SizedBox(height: 8),
+                    Selector<DataCenter, List<Wallpaper>>(
+                      builder: (_, val, child) {
+                        return Text('${val.length}张壁纸');
+                      },
+                      selector: (_, foo) => foo.wallpapers,
+                    ),
                   ],
                 ),
               ),
             ),
-            SliverStaggeredGrid.countBuilder(
-              crossAxisCount: 2,
-              mainAxisSpacing: 8.0,
-              crossAxisSpacing: 8.0,
-              itemCount: DEFAULT_WALLPAPER_LIST.length,
-              itemBuilder: (context, index) {
-                final wallpaper = DEFAULT_WALLPAPER_LIST[index];
-                return Stack(
-                  children: [
-                    Container(
-                        clipBehavior: Clip.antiAlias,
-                        height: (index + 1) * 50.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          color: Colors.green,
-                        ),
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: Colors.white,
-                                child: Text('asd'),
+            Selector<DataCenter, List<Wallpaper>>(
+              builder: (_, val, child) {
+                return SliverStaggeredGrid.countBuilder(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 8.0,
+                  crossAxisSpacing: 8.0,
+                  itemCount: val.length,
+                  itemBuilder: (context, index) {
+                    final wallpaper = val[index];
+                    return Stack(
+                      children: [
+                        Container(
+                            clipBehavior: Clip.antiAlias,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              color: Colors.green,
+                              image: DecorationImage(
+                                image: FileImage(
+                                  File(wallpaper.getMainThumbnail()),
+                                ),
+                                fit: BoxFit.cover,
                               ),
-                              Text('${wallpaper.path}')
-                            ],
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const SizedBox(height: 200),
+                                Container(
+                                  width: double.infinity,
+                                  color: Colors.white.withOpacity(0.8),
+                                  padding: EdgeInsets.all(12),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('${wallpaper.path}'),
+                                      Text(
+                                        '${wallpaper.id}',
+                                        style:
+                                            Theme.of(context).textTheme.caption,
+                                      ),
+                                      Text(
+                                        '${wallpaper.wallpaperType}',
+                                        style:
+                                            Theme.of(context).textTheme.caption,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            )),
+                        Positioned.fill(
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () async {
+                                await SharedPreferenceUtil.setString(
+                                    SpfKeys.LAST_WALLPAPER,
+                                    json.encode(wallpaper));
+                                NativeTool.setWallpaper(wallpaper);
+                              },
+                              borderRadius: BorderRadius.circular(16),
+                            ),
                           ),
-                        )),
-                    Positioned.fill(
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () async {
-                            await SharedPreferenceUtil.setString(
-                                SpfKeys.LAST_WALLPAPER, json.encode(wallpaper));
-                            NativeTool.setWallpaper(wallpaper);
-                          },
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
-                    )
-                  ],
+                        )
+                      ],
+                    );
+                  },
+                  staggeredTileBuilder: (index) => StaggeredTile.fit(1),
                 );
               },
-              staggeredTileBuilder: (index) => StaggeredTile.fit(1),
+              selector: (_, foo) => foo.wallpapers,
             ),
             SliverToBoxAdapter(
               child: SizedBox(height: LWThemeUtil.navBarHeight),

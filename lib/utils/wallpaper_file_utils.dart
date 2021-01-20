@@ -1,11 +1,15 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:archive/archive.dart';
+import 'package:archive/archive_io.dart';
 import 'package:es_compression/brotli.dart';
 import 'package:file_utils/file_utils.dart';
+import 'package:project_lw/entity/wallpaper.dart';
 
 class WallpaperFileUtil {
   static const WALLPAPER_INFO_FILE_NAME = 'wallpaper.json';
   static const VIEW_INFO_FILE_NAME = 'view_config.json';
+  static const PACK_NAME = 'wallpaper.$SUPPORTED_WALLPAPER_FORMAT';
 
   static const SUPPORTED_WALLPAPER_FORMAT = 'lwpak';
   static const SUPPORTED_IMAGE_FORMAT = 'webp';
@@ -42,32 +46,66 @@ class WallpaperFileUtil {
         await dir.create(recursive: true);
       }
     }
+  }
 
-    // final tarArchiveFile = File('${unpackDir.path}${Platform.pathSeparator}content.tar');
-    // if (tarArchiveFile.existsSync()) tarArchiveFile.deleteSync();
-    // tarArchiveFile.createSync();
-    // tarArchiveFile.writeAsBytes(result);
+  static Wallpaper parseWallpaperPack(final Directory directory) {
+    if (!directory.existsSync()) return null;
+
+    final jsonFile = File(
+        directory.path + Platform.pathSeparator + WALLPAPER_INFO_FILE_NAME);
+
+    if (!jsonFile.existsSync()) return null;
+
+    final Wallpaper wallpaper = Wallpaper.fromJson(json.decode(jsonFile.readAsStringSync()));
+
+    return wallpaper;
   }
 
   /// 打包 wallpaper pack
   /// [wallpaperSource] 资源路径
-  /// [destFilePath] 打包文件路径
-  static void packWallpaper(
-      final Directory wallpaperSource, final String destFilePath) {
-    if (wallpaperSource == null || destFilePath == null)
-      throw ArgumentError.notNull('wallpaperFile');
+  static Future<void> packWallpaper(final Directory wallpaperSource) async {
+    if (wallpaperSource == null) throw ArgumentError.notNull('wallpaperFile');
     if (!wallpaperSource.existsSync())
       throw ArgumentError('!wallpaperSource.existsSync()');
 
-    final tarEncoder = TarEncoder();
+    final fileList =
+    wallpaperSource.listSync().map((e) => File(e.path)).toList();
 
-    final archive = Archive();
+    final tempDir =
+        Directory(wallpaperSource.path + Platform.pathSeparator + '.temp');
+    tempDir.createSync();
 
-    // archive.addFile(ArchiveFile)
-    //
-    // wallpaperSource.listSync().forEach((element) {
-    //   archive.addFile(ArchiveFile(FileUtils.basename(element.path), element.statSync().size, content));
-    // });
+    await for (final element in Stream.fromIterable(fileList)) {
+      await element.rename(tempDir.path +
+          Platform.pathSeparator +
+          FileUtils.basename(element.path));
+    }
 
+    final tarEncoder = TarFileEncoder();
+    tarEncoder
+        .create(wallpaperSource.path + Platform.pathSeparator + 'content.tar');
+    tarEncoder.addDirectory(tempDir);
+
+    final fileListNew = tempDir.listSync().map((e) => File(e.path)).toList();
+
+    await for (final element in Stream.fromIterable(fileListNew)) {
+      await element.rename(wallpaperSource.path +
+          Platform.pathSeparator +
+          FileUtils.basename(element.path));
+    }
+
+    tempDir.deleteSync();
+
+    final tarFile = File(tarEncoder.tar_path);
+    tarEncoder.close();
+
+    final result = brotli.encode(tarFile.readAsBytesSync());
+
+    final pak = File(wallpaperSource.path + Platform.pathSeparator + PACK_NAME);
+    if (pak.existsSync()) pak.deleteSync();
+
+    pak.writeAsBytesSync(result);
+
+    tarFile.deleteSync();
   }
 }

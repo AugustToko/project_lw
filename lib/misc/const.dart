@@ -1,7 +1,7 @@
 import 'package:project_lw/entity/wallpaper.dart';
 
 /// https://mgz.me/
-const DEFAULT_WALLPAPER_LIST = <Wallpaper>[
+const DEFAULT_HTML_WALLPAPER_LIST = <Wallpaper>[
   Wallpaper.all('1', WallpaperType.HTML, 'TEST1', 'description', 'author', null,
       1, 'Fuck', 'http://fff.cmiscm.com/#!/section/cylinder'),
   Wallpaper.all('2', WallpaperType.HTML, 'TEST1', 'description', 'author', null,
@@ -24,4 +24,10 @@ const DEFAULT_WALLPAPER_LIST = <Wallpaper>[
       null, 1, 'AA', 'https://blackpawn.com/demos/vrtx-01-compo-filler/'),
   Wallpaper.all('11', WallpaperType.HTML, 'TEST1', 'description', 'author',
       null, 1, 'AA', 'http://www.aaronkoblin.com/Aaronetrope/'),
+];
+
+const PRESET_WALLPAPER_PATH = [
+  'assets/demo1.lwpak',
+  'assets/demo2.lwpak',
+  'assets/demo3.lwpak',
 ];

@@ -34,54 +34,54 @@ class MyApp extends StatelessWidget {
       popupMenuTheme: PopupMenuThemeData(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
-      textTheme: ThemeData.light().textTheme.copyWith(
-          headline3: GoogleFonts.quicksand(
-            color: Color.fromARGB(255, 70, 76, 83),
-            letterSpacing: .3,
-          ),
-          headline4: GoogleFonts.quicksand(
-            color: Color.fromARGB(255, 70, 76, 83),
-            letterSpacing: .3,
-          ),
-          headline5: GoogleFonts.quicksand(
-            color: Color.fromARGB(255, 70, 76, 83),
-            fontSize: 26,
-            letterSpacing: .3,
-          ),
-          headline6: GoogleFonts.quicksand(
-            color: Color.fromARGB(255, 70, 76, 83),
-            letterSpacing: .3,
-          ),
-          caption: GoogleFonts.quicksand(
-            color: Color.fromARGB(255, 70, 76, 83),
-            fontSize: 13,
-            letterSpacing: .3,
-          ),
-          button: GoogleFonts.quicksand(
-            color: Color.fromARGB(255, 70, 76, 83),
-            letterSpacing: .3,
-          ),
-          bodyText1: GoogleFonts.quicksand(
-            color: Color.fromARGB(255, 70, 76, 83),
-            letterSpacing: .3,
-          ),
-          bodyText2: GoogleFonts.quicksand(
-            color: Color.fromARGB(255, 70, 76, 83),
-            letterSpacing: .3,
-          ),
-          subtitle1: GoogleFonts.quicksand(
-            color: Color.fromARGB(255, 70, 76, 83),
-            letterSpacing: .3,
-          ),
-          subtitle2: GoogleFonts.quicksand(
-            color: Color.fromARGB(255, 70, 76, 83),
-            letterSpacing: .3,
-          )),
-      primaryTextTheme: ThemeData.light().primaryTextTheme.copyWith(
-            headline6: GoogleFonts.quicksand(
-              letterSpacing: .3,
-            ),
-          ),
+      // textTheme: ThemeData.light().textTheme.copyWith(
+      //     headline3: GoogleFonts.quicksand(
+      //       color: Color.fromARGB(255, 70, 76, 83),
+      //       letterSpacing: .3,
+      //     ),
+      //     headline4: GoogleFonts.quicksand(
+      //       color: Color.fromARGB(255, 70, 76, 83),
+      //       letterSpacing: .3,
+      //     ),
+      //     headline5: GoogleFonts.quicksand(
+      //       color: Color.fromARGB(255, 70, 76, 83),
+      //       fontSize: 26,
+      //       letterSpacing: .3,
+      //     ),
+      //     headline6: GoogleFonts.quicksand(
+      //       color: Color.fromARGB(255, 70, 76, 83),
+      //       letterSpacing: .3,
+      //     ),
+      //     caption: GoogleFonts.quicksand(
+      //       color: Color.fromARGB(255, 70, 76, 83),
+      //       fontSize: 13,
+      //       letterSpacing: .3,
+      //     ),
+      //     button: GoogleFonts.quicksand(
+      //       color: Color.fromARGB(255, 70, 76, 83),
+      //       letterSpacing: .3,
+      //     ),
+      //     bodyText1: GoogleFonts.quicksand(
+      //       color: Color.fromARGB(255, 70, 76, 83),
+      //       letterSpacing: .3,
+      //     ),
+      //     bodyText2: GoogleFonts.quicksand(
+      //       color: Color.fromARGB(255, 70, 76, 83),
+      //       letterSpacing: .3,
+      //     ),
+      //     subtitle1: GoogleFonts.quicksand(
+      //       color: Color.fromARGB(255, 70, 76, 83),
+      //       letterSpacing: .3,
+      //     ),
+      //     subtitle2: GoogleFonts.quicksand(
+      //       color: Color.fromARGB(255, 70, 76, 83),
+      //       letterSpacing: .3,
+      //     )),
+      // primaryTextTheme: ThemeData.light().primaryTextTheme.copyWith(
+      //       headline6: GoogleFonts.quicksand(
+      //         letterSpacing: .3,
+      //       ),
+      //     ),
       dialogTheme: DialogTheme(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ));
@@ -97,64 +97,64 @@ class MyApp extends StatelessWidget {
       popupMenuTheme: PopupMenuThemeData(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
-      textTheme: ThemeData.dark().textTheme.copyWith(
-          headline3: GoogleFonts.quicksand(
-            color: Colors.white,
-            letterSpacing: .3,
-          ),
-          headline4: GoogleFonts.quicksand(
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-            letterSpacing: .3,
-          ),
-          headline5: GoogleFonts.quicksand(
-            fontWeight: FontWeight.w400,
-            color: Colors.white,
-            fontSize: 26,
-            letterSpacing: .3,
-          ),
-          headline6: GoogleFonts.quicksand(
-            fontWeight: FontWeight.w400,
-            color: Colors.white,
-            letterSpacing: .3,
-          ),
-          caption: GoogleFonts.quicksand(
-            fontWeight: FontWeight.w400,
-            color: ThemeData.dark().textTheme.caption.color,
-            fontSize: 13,
-            letterSpacing: .3,
-          ),
-          button: GoogleFonts.quicksand(
-            color: ThemeData.dark().textTheme.button.color,
-            fontWeight: FontWeight.w500,
-            letterSpacing: .3,
-          ),
-          bodyText1: GoogleFonts.quicksand(
-            fontWeight: FontWeight.w500,
-            color: ThemeData.dark().textTheme.bodyText1.color,
-            letterSpacing: .3,
-          ),
-          bodyText2: GoogleFonts.quicksand(
-            fontWeight: FontWeight.w400,
-            color: ThemeData.dark().textTheme.bodyText2.color,
-            letterSpacing: .3,
-          ),
-          subtitle1: GoogleFonts.quicksand(
-            fontWeight: FontWeight.bold,
-            color: ThemeData.dark().textTheme.subtitle1.color,
-            letterSpacing: .3,
-          ),
-          subtitle2: GoogleFonts.quicksand(
-            fontWeight: FontWeight.w600,
-            color: ThemeData.dark().textTheme.subtitle2.color,
-            letterSpacing: .3,
-          )),
-      primaryTextTheme: ThemeData.dark().primaryTextTheme.copyWith(
-            headline6: GoogleFonts.quicksand(
-              fontWeight: FontWeight.w500,
-              letterSpacing: .3,
-            ),
-          ),
+      // textTheme: ThemeData.dark().textTheme.copyWith(
+      //     headline3: GoogleFonts.quicksand(
+      //       color: Colors.white,
+      //       letterSpacing: .3,
+      //     ),
+      //     headline4: GoogleFonts.quicksand(
+      //       fontWeight: FontWeight.bold,
+      //       color: Colors.white,
+      //       letterSpacing: .3,
+      //     ),
+      //     headline5: GoogleFonts.quicksand(
+      //       fontWeight: FontWeight.w400,
+      //       color: Colors.white,
+      //       fontSize: 26,
+      //       letterSpacing: .3,
+      //     ),
+      //     headline6: GoogleFonts.quicksand(
+      //       fontWeight: FontWeight.w400,
+      //       color: Colors.white,
+      //       letterSpacing: .3,
+      //     ),
+      //     caption: GoogleFonts.quicksand(
+      //       fontWeight: FontWeight.w400,
+      //       color: ThemeData.dark().textTheme.caption.color,
+      //       fontSize: 13,
+      //       letterSpacing: .3,
+      //     ),
+      //     button: GoogleFonts.quicksand(
+      //       color: ThemeData.dark().textTheme.button.color,
+      //       fontWeight: FontWeight.w500,
+      //       letterSpacing: .3,
+      //     ),
+      //     bodyText1: GoogleFonts.quicksand(
+      //       fontWeight: FontWeight.w500,
+      //       color: ThemeData.dark().textTheme.bodyText1.color,
+      //       letterSpacing: .3,
+      //     ),
+      //     bodyText2: GoogleFonts.quicksand(
+      //       fontWeight: FontWeight.w400,
+      //       color: ThemeData.dark().textTheme.bodyText2.color,
+      //       letterSpacing: .3,
+      //     ),
+      //     subtitle1: GoogleFonts.quicksand(
+      //       fontWeight: FontWeight.bold,
+      //       color: ThemeData.dark().textTheme.subtitle1.color,
+      //       letterSpacing: .3,
+      //     ),
+      //     subtitle2: GoogleFonts.quicksand(
+      //       fontWeight: FontWeight.w600,
+      //       color: ThemeData.dark().textTheme.subtitle2.color,
+      //       letterSpacing: .3,
+      //     )),
+      // primaryTextTheme: ThemeData.dark().primaryTextTheme.copyWith(
+      //       headline6: GoogleFonts.quicksand(
+      //         fontWeight: FontWeight.w500,
+      //         letterSpacing: .3,
+      //       ),
+      //     ),
       dialogTheme: DialogTheme(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ));

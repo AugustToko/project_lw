@@ -69,11 +69,11 @@ class Wallpaper {
   factory Wallpaper.fromMap(Map<String, dynamic> map) {
     return new Wallpaper(
       id: map['id'] as String,
-      wallpaperType: map['wallpaperType'] as WallpaperType,
+      wallpaperType: WallpaperType.values[map['wallpaperType']],
       name: map['name'] as String,
       description: map['description'] as String,
       author: map['author'] as String,
-      thumbnails: json.decode(map['thumbnails']) as List<String>,
+      thumbnails: map['thumbnails'].cast<String>(),
       versionCode: map['versionCode'] as int,
       versionName: map['versionName'] as String,
       path: map['path'] as String,
@@ -116,6 +116,30 @@ class Wallpaper {
 
   factory Wallpaper.fromJson(dynamic map) {
     return Wallpaper.fromMap(map);
+  }
+
+  Wallpaper copyWith({
+    final String id,
+    final WallpaperType wallpaperType,
+    final String name,
+    final String description,
+    final String author,
+    final List<String> thumbnails,
+    final int versionCode,
+    final String versionName,
+    final String path,
+  }) {
+    return Wallpaper(
+      id: id ?? this.id,
+      wallpaperType: wallpaperType ?? this.wallpaperType,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      author: author ?? this.author,
+      thumbnails: thumbnails ?? this.thumbnails,
+      versionCode: versionCode ?? this.versionCode,
+      versionName: versionName ?? this.versionName,
+      path: path ?? this.path,
+    );
   }
 
   @override

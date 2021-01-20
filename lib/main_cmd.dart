@@ -1,17 +1,22 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:file_utils/file_utils.dart';
 import 'package:project_lw/entity/wallpaper.dart';
 import 'package:project_lw/utils/wallpaper_file_utils.dart';
+import 'package:uuid/uuid.dart';
 
-void main() {
-  print(FileUtils.basename(
-      File('E:\\project_lw\\assets\\demo1\\wallpaper.lwpak').path));
-  // WallpaperFileUtil.unpackWallpaper(
-  //   File('E:\\project_lw\\assets\\demo1\\wallpaper.lwpak'),
-  //   Directory('C:\\Users\\Administrator\\Desktop\\test'),
-  // );
+final uuid = Uuid();
+
+Future<void> main() async {
+  await WallpaperFileUtil.packWallpaper(
+    Directory('C:\\Users\\chenlongcould\\AndroidStudioProjects\\project_lw\\assets\\demo1'),
+  );
+  await WallpaperFileUtil.packWallpaper(
+    Directory('C:\\Users\\chenlongcould\\AndroidStudioProjects\\project_lw\\assets\\demo2'),
+  );
+  await WallpaperFileUtil.packWallpaper(
+    Directory('C:\\Users\\chenlongcould\\AndroidStudioProjects\\project_lw\\assets\\demo3'),
+  );
 }
 
 void testJson() {
