@@ -52,7 +52,7 @@ class WallpaperTools {
 }
 
 extension WallpaperExt on Wallpaper {
-  String getMainThumbnail() {
+  String getMainThumbnailPath() {
     return WallpaperTools.instance.wallpaperPlaceDir.path +
         Platform.pathSeparator +
         id +
