@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_utils/file_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:project_lw/entity/center/data_center.dart';
 import 'package:project_lw/entity/wallpaper.dart';
@@ -102,7 +104,8 @@ class WallpaperTools {
     print('----------------------------------------');
     print(newDir.path);
 
-    await for (final element in Stream.fromIterable(tempDir.listSync())) {
+    await for (final element
+        in Stream.fromIterable(tempDir.listSync(recursive: true))) {
       await element.rename(newDir.path +
           Platform.pathSeparator +
           FileUtils.basename(element.path));
@@ -110,7 +113,7 @@ class WallpaperTools {
 
     print('------new-------');
 
-    print(newDir.listSync().map((e) => e.path));
+    print(newDir.listSync(recursive: true).map((e) => e.path));
 
     await DataCenter.get(context).addWallpaper(wallpaper);
   }
@@ -146,6 +149,94 @@ class WallpaperTools {
     dir.deleteSync(recursive: true);
     DataCenter.get(context).removeWallpaper(wallpaper);
   }
+
+  Future<void> importVideoFromDir(
+      BuildContext context, Directory directory) async {
+    if (directory == null || !directory.existsSync()) return;
+
+    final files = directory.listSync();
+    final target = <String>[];
+
+    files.forEach((element) {
+      if (element.path.endsWith('mp4')) target.add(element.path);
+    });
+
+    final FlutterFFmpeg _flutterFFmpeg = FlutterFFmpeg();
+
+    await for (final videoPath in Stream.fromIterable(target)) {
+      final tempName = directory.path +
+          Platform.pathSeparator +
+          '${DateTime.now().millisecondsSinceEpoch}.png';
+      final result = await _flutterFFmpeg.executeWithArguments([
+        // '-ss',
+        // '00:01:00',
+        // '-i',
+        // path,
+        // '-vframes',
+        // '1',
+        // '-q:v',
+        // '2',
+        '-i',
+        '$videoPath',
+        '-ss',
+        '4.500',
+        '-vframes',
+        '1',
+        '-q:v',
+        '2',
+        tempName,
+      ]);
+
+      if (result != 0 || !File(tempName).existsSync()) continue;
+
+      final wallpaperConfig = Wallpaper(
+          id: uuid.v1(),
+          name: FileUtils.basename(videoPath),
+          author: 'Unknown',
+          description: 'None',
+          mainFilepath: FileUtils.basename(videoPath),
+          thumbnails: ['thumbnail1.png'],
+          versionCode: 1,
+          versionName: '1.0',
+          wallpaperType: WallpaperType.VIDEO);
+
+      final targetDir = Directory(
+          WallpaperTools.instance.wallpaperPlaceDir.path +
+              Platform.pathSeparator +
+              wallpaperConfig.id);
+
+      targetDir.createSync();
+
+      final configFile = File(targetDir.path +
+          Platform.pathSeparator +
+          WallpaperFileUtil.WALLPAPER_INFO_FILE_NAME);
+
+      configFile.writeAsStringSync(json.encode(wallpaperConfig));
+
+      final thumbnailFile = File(tempName);
+
+      await thumbnailFile
+          .copy(targetDir.path + Platform.pathSeparator + 'thumbnail1.png');
+
+      try {
+        await thumbnailFile.delete();
+      } catch (e, s) {
+        print(e);
+        print(s);
+      }
+
+      // thumbnailFile.renameSync(targetDir.path +
+      //     Platform.pathSeparator +
+      //     FileUtils.basename(thumbnailFile.path));
+
+      final videoFile = File(videoPath);
+      await videoFile.copy(targetDir.path +
+          Platform.pathSeparator +
+          FileUtils.basename(videoFile.path));
+
+      await DataCenter.get(context).addWallpaper(wallpaperConfig);
+    }
+  }
 }
 
 extension WallpaperExt on Wallpaper {
@@ -175,7 +266,10 @@ extension WallpaperExt on Wallpaper {
 
   Future<WallpaperExtInfo> extInfo() async {
     final dirPath = this.getDirPath();
-    final allPath = Directory(dirPath).listSync().map((e) => e.path).toList();
+    final allPath = Directory(dirPath)
+        .listSync(recursive: true)
+        .map((e) => e.path)
+        .toList();
     final size = (await Directory(dirPath).stat()).size;
 
     return WallpaperExtInfo(dirPath, allPath, size, true);

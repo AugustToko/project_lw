@@ -1,15 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:project_lw/entity/center/data_center.dart';
 import 'package:project_lw/pages/splash_page.dart';
+import 'package:project_lw/utils/wallpaper_tools.dart';
 import 'package:provider/provider.dart';
 
 final methodChannel = MethodChannel('lingyun_lw_channel_1');
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   SystemChrome.setPreferredOrientations(

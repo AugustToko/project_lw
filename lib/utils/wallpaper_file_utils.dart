@@ -74,7 +74,7 @@ class WallpaperFileUtil {
     if (!wallpaperSource.existsSync())
       throw ArgumentError('!wallpaperSource.existsSync()');
 
-    final fileList = wallpaperSource.listSync();
+    final fileList = wallpaperSource.listSync(recursive: true);
 
     final tempDir =
         Directory(wallpaperSource.path + Platform.pathSeparator + '.temp');
@@ -91,7 +91,7 @@ class WallpaperFileUtil {
         .create(wallpaperSource.path + Platform.pathSeparator + 'content.tar');
     tarEncoder.addDirectory(tempDir);
 
-    final fileListNew = tempDir.listSync();
+    final fileListNew = tempDir.listSync(recursive: true);
 
     await for (final element in Stream.fromIterable(fileListNew)) {
       await element.rename(wallpaperSource.path +
