@@ -116,8 +116,30 @@ class WallpaperFileUtil {
     return pak;
   }
 
-  // TODO checkWallpaperConfigFile
   static bool checkWallpaperConfigFile(File file) {
+    if (file == null) return false;
+    if (!file.existsSync()) return false;
+    if (!file.path.contains(WALLPAPER_INFO_FILE_NAME)) return false;
+
+    Wallpaper wallpaper;
+    try {
+      wallpaper =
+          Wallpaper.fromJson(json.decode(file.readAsStringSync()));
+    } catch (e, s) {
+      print(e);
+      print(s);
+      return false;
+    }
+
+    if (wallpaper == null) return false;
+
+    wallpaper.toMap().forEach((key, value) {
+      if (value == null) return false;
+    });
+
+    if (wallpaper.id.trim().isEmpty) return false;
+    if (wallpaper.mainFilepath.trim().isEmpty) return false;
+
     return true;
   }
 }

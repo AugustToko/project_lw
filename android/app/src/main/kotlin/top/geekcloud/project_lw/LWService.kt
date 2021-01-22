@@ -464,6 +464,7 @@ class LWService : WallpaperService() {
         override fun onVisibilityChanged(visible: Boolean) {
             log("On Visibility Changed $visible")
 
+
 //            // To save battery, when we're not visible we want the WebView to stop processing,
 //            // so we use the loadUrl mechanism to call some JavaScript to tell it to pause.
 //            if (visible) {
