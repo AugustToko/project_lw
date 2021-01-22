@@ -44,9 +44,7 @@ class NavBar extends StatelessWidget {
       height: LWThemeUtil.navBarHeight,
       decoration: BoxDecoration(
         // navBar 背景颜色
-        color: Theme.of(context)
-            .scaffoldBackgroundColor
-            .withOpacity(0.8),
+        color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.8),
       ),
       alignment: Alignment.center,
       child: Padding(
@@ -68,8 +66,7 @@ class NavBar extends StatelessWidget {
       ]),
       child: ClipRect(
         child: BackdropFilter(
-          filter: ImageFilter.blur(
-              sigmaX: 32, sigmaY: 32),
+          filter: ImageFilter.blur(sigmaX: 32, sigmaY: 32),
           child: body,
         ),
       ),

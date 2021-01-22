@@ -17,7 +17,8 @@ class DataBaseHelper {
     }, onUpgrade: (database, oldVersion, newVersion) async {
       var batch = database.batch();
       for (var i = oldVersion; i < newVersion; i++) {
-        print('========================== DB VERSION ==========================');
+        print(
+            '========================== DB VERSION ==========================');
         print(i);
         // switch (i) {
         //   case 1:

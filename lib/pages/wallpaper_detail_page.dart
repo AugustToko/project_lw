@@ -58,8 +58,7 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
           child: Icon(Icons.check),
           onPressed: () async {
             await SharedPreferenceUtil.setString(
-                SpfKeys.LAST_WALLPAPER,
-                json.encode(wallpaper));
+                SpfKeys.LAST_WALLPAPER, json.encode(wallpaper));
             NativeTool.setWallpaper(wallpaper);
           },
         ),

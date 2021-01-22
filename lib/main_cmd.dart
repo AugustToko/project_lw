@@ -9,13 +9,16 @@ final uuid = Uuid();
 
 Future<void> main() async {
   await WallpaperFileUtil.packWallpaper(
-    Directory('C:\\Users\\chenlongcould\\AndroidStudioProjects\\project_lw\\assets\\demo1'),
+    Directory(
+        'C:\\Users\\chenlongcould\\AndroidStudioProjects\\project_lw\\assets\\demo1'),
   );
   await WallpaperFileUtil.packWallpaper(
-    Directory('C:\\Users\\chenlongcould\\AndroidStudioProjects\\project_lw\\assets\\demo2'),
+    Directory(
+        'C:\\Users\\chenlongcould\\AndroidStudioProjects\\project_lw\\assets\\demo2'),
   );
   await WallpaperFileUtil.packWallpaper(
-    Directory('C:\\Users\\chenlongcould\\AndroidStudioProjects\\project_lw\\assets\\demo3'),
+    Directory(
+        'C:\\Users\\chenlongcould\\AndroidStudioProjects\\project_lw\\assets\\demo3'),
   );
 }
 

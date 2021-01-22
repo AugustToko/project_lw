@@ -56,7 +56,8 @@ class WallpaperFileUtil {
 
     if (!jsonFile.existsSync()) return null;
 
-    final Wallpaper wallpaper = Wallpaper.fromJson(json.decode(jsonFile.readAsStringSync()));
+    final Wallpaper wallpaper =
+        Wallpaper.fromJson(json.decode(jsonFile.readAsStringSync()));
 
     return wallpaper;
   }
@@ -69,7 +70,7 @@ class WallpaperFileUtil {
       throw ArgumentError('!wallpaperSource.existsSync()');
 
     final fileList =
-    wallpaperSource.listSync().map((e) => File(e.path)).toList();
+        wallpaperSource.listSync().map((e) => File(e.path)).toList();
 
     final tempDir =
         Directory(wallpaperSource.path + Platform.pathSeparator + '.temp');
