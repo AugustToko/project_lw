@@ -126,7 +126,6 @@ class LWService : WallpaperService() {
         }
 
         override fun onCreate(surfaceHolder: SurfaceHolder) {
-            super.onCreate(surfaceHolder)
             val pref = getSharedPreferences(
                     MyApplication.OPTIONS_PREF, MODE_PRIVATE
             )
