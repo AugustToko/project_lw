@@ -23,6 +23,11 @@ class WallpaperFileUtil {
       final File wallpaperFile, final Directory unpackDir) async {
     if (wallpaperFile == null || unpackDir == null)
       throw ArgumentError.notNull('wallpaperFile');
+
+    if (!wallpaperFile.path.endsWith(SUPPORTED_WALLPAPER_FORMAT))
+      throw ArgumentError(
+          '!wallpaperFile.path.endsWith(SUPPORTED_WALLPAPER_FORMAT)');
+
     if (!wallpaperFile.existsSync() || !unpackDir.existsSync())
       throw ArgumentError(
           '!wallpaperFile.existsSync() || !unpackPath.existsSync()');
@@ -64,7 +69,7 @@ class WallpaperFileUtil {
 
   /// 打包 wallpaper pack
   /// [wallpaperSource] 资源路径
-  static Future<void> packWallpaper(final Directory wallpaperSource) async {
+  static Future<File> packWallpaper(final Directory wallpaperSource) async {
     if (wallpaperSource == null) throw ArgumentError.notNull('wallpaperFile');
     if (!wallpaperSource.existsSync())
       throw ArgumentError('!wallpaperSource.existsSync()');
@@ -107,6 +112,8 @@ class WallpaperFileUtil {
     pak.writeAsBytesSync(result);
 
     tarFile.deleteSync();
+
+    return pak;
   }
 
   // TODO checkWallpaperConfigFile

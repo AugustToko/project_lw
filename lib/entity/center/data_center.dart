@@ -30,7 +30,9 @@ class DataCenter extends ChangeNotifier {
   Future<void> addWallpaper(final Wallpaper wallpaper) async {
     if (wallpaper == null ||
         wallpaper.id == null ||
-        wallpaper.id.trim().isEmpty) return;
+        wallpaper.id
+            .trim()
+            .isEmpty) return;
 
     _wallpapers = []
       ..addAll(_wallpapers)
@@ -39,5 +41,22 @@ class DataCenter extends ChangeNotifier {
     notifyListeners();
 
     await DataBaseHelper.instance.db.insert(Wallpaper.TABLE, wallpaper.toMap());
+  }
+
+  Future<void> removeWallpaper(Wallpaper wallpaper) async {
+    if (wallpaper == null ||
+        wallpaper.id == null ||
+        wallpaper.id
+            .trim()
+            .isEmpty) return;
+
+    _wallpapers = []
+      ..addAll(_wallpapers)
+      ..removeWhere((element) => element.id == wallpaper.id);
+
+    notifyListeners();
+
+    await DataBaseHelper.instance.db.delete(
+        Wallpaper.TABLE, where: 'id = ?', whereArgs: [wallpaper.id]);
   }
 }

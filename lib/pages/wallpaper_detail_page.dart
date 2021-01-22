@@ -276,7 +276,7 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                         children: [
                           FlatButton.icon(
                             onPressed: () {
-                              // TODO
+                              WallpaperTools.instance.shareWallpaper(wallpaper);
                             },
                             icon: Icon(Icons.ios_share),
                             label: Text('分享'),
@@ -284,7 +284,9 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                           ),
                           FlatButton.icon(
                             onPressed: () {
-                              // TODO
+                              WallpaperTools.instance
+                                  .removeWallpaper(context, wallpaper);
+                              Navigator.pop(context);
                             },
                             icon: Icon(Icons.delete),
                             label: Text('删除'),

@@ -10,6 +10,7 @@ import 'package:project_lw/utils/shared_prefs.dart';
 import 'package:project_lw/utils/spf_keys.dart';
 import 'package:project_lw/utils/wallpaper_file_utils.dart';
 import 'package:project_lw/utils/wallpaper_tools.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SplashPage extends StatefulWidget {
   static void push(final BuildContext context) {
@@ -38,6 +39,13 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      Map<Permission, PermissionStatus> statuses = await [
+        Permission.storage,
+        Permission.camera,
+        Permission.microphone,
+        Permission.storage,
+      ].request();
+
       _valueNotifier.value = '正在初始化数据库';
       await DataCenter.get(context).init();
 
