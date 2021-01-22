@@ -69,8 +69,7 @@ class WallpaperFileUtil {
     if (!wallpaperSource.existsSync())
       throw ArgumentError('!wallpaperSource.existsSync()');
 
-    final fileList =
-        wallpaperSource.listSync().map((e) => File(e.path)).toList();
+    final fileList = wallpaperSource.listSync();
 
     final tempDir =
         Directory(wallpaperSource.path + Platform.pathSeparator + '.temp');
@@ -87,7 +86,7 @@ class WallpaperFileUtil {
         .create(wallpaperSource.path + Platform.pathSeparator + 'content.tar');
     tarEncoder.addDirectory(tempDir);
 
-    final fileListNew = tempDir.listSync().map((e) => File(e.path)).toList();
+    final fileListNew = tempDir.listSync();
 
     await for (final element in Stream.fromIterable(fileListNew)) {
       await element.rename(wallpaperSource.path +
@@ -108,5 +107,10 @@ class WallpaperFileUtil {
     pak.writeAsBytesSync(result);
 
     tarFile.deleteSync();
+  }
+
+  // TODO checkWallpaperConfigFile
+  static bool checkWallpaperConfigFile(File file) {
+    return true;
   }
 }

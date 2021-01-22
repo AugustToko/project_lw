@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_utils/file_utils.dart';
@@ -53,6 +54,67 @@ class WallpaperTools {
           .addWallpaper(wallpaper.copyWith(id: wallpaperId));
     }
   }
+
+  Future<void> importWallpaper(final BuildContext context,
+      final File wallpaperPack) async {
+    if (wallpaperPack == null || !wallpaperPack.existsSync()) return;
+
+    final tempDir = Directory(
+      wallpaperPlaceDir.path +
+          Platform.pathSeparator +
+          'temp-${DateTime
+              .now()
+              .millisecondsSinceEpoch}',
+    );
+
+    tempDir.createSync();
+
+    Future<void> clean() async {
+      await tempDir.delete(recursive: true);
+    }
+
+    await WallpaperFileUtil.unpackWallpaper(wallpaperPack, tempDir);
+
+    final config =
+    File(tempDir.path + Platform.pathSeparator + 'wallpaper.json');
+    if (!config.existsSync()) {
+      await clean();
+      return;
+    }
+
+    final wallpaper =
+    Wallpaper.fromJson(json.decode(config.readAsStringSync()));
+
+    if (wallpaper == null &&
+        !WallpaperFileUtil.checkWallpaperConfigFile(config)) {
+      await clean();
+      return;
+    }
+
+    final newDir = Directory(
+        wallpaperPlaceDir.path + Platform.pathSeparator + wallpaper.id);
+    if (newDir.existsSync()) {
+      await clean();
+      return;
+    }
+
+    newDir.createSync();
+
+    print('----------------------------------------');
+    print(newDir.path);
+
+    await for (final element in Stream.fromIterable(tempDir.listSync())) {
+      await element.rename(newDir.path +
+          Platform.pathSeparator +
+          FileUtils.basename(element.path));
+    }
+
+    print('------new-------');
+
+    print(newDir.listSync().map((e) => e.path));
+
+    await DataCenter.get(context).addWallpaper(wallpaper);
+  }
 }
 
 extension WallpaperExt on Wallpaper {
@@ -67,18 +129,18 @@ extension WallpaperExt on Wallpaper {
   List<String> getAllThumbnailPath() {
     return thumbnails
         .map((e) =>
-            WallpaperTools.instance.wallpaperPlaceDir.path +
-            Platform.pathSeparator +
-            id +
-            Platform.pathSeparator +
-            e)
+    WallpaperTools.instance.wallpaperPlaceDir.path +
+        Platform.pathSeparator +
+        id +
+        Platform.pathSeparator +
+        e)
         .toList();
   }
 
   String getDirPath() =>
       WallpaperTools.instance.wallpaperPlaceDir.path +
-      Platform.pathSeparator +
-      id;
+          Platform.pathSeparator +
+          id;
 
   Future<WallpaperExtInfo> extInfo() async {
     final dirPath = this.getDirPath();
