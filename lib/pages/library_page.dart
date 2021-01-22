@@ -103,7 +103,9 @@ class _LibraryPageState extends State<LibraryPage> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text('${wallpaper.path}'),
+                                          Text('${wallpaper.mainFilepath}',
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2),
                                           Text(
                                             '${wallpaper.wallpaperType}',
                                             style: Theme.of(context)
@@ -124,10 +126,6 @@ class _LibraryPageState extends State<LibraryPage> {
                               child: InkWell(
                                 onTap: () async {
                                   WallpaperDetailPage.push(context, wallpaper);
-                                  // await SharedPreferenceUtil.setString(
-                                  //     SpfKeys.LAST_WALLPAPER,
-                                  //     json.encode(wallpaper));
-                                  // NativeTool.setWallpaper(wallpaper);
                                 },
                                 borderRadius: BorderRadius.circular(16),
                               ),
@@ -164,7 +162,7 @@ class _LibraryPageState extends State<LibraryPage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text('${wallpaper.path}'),
+                                      Text('${wallpaper.mainFilepath}'),
                                       Text(
                                         '${wallpaper.id}',
                                         style:

@@ -41,7 +41,7 @@ class Wallpaper {
   /// [WallpaperType.HTML] url
   /// [WallpaperType.VIDEO] file path
   /// [WallpaperType.VIEW] file (config.json) path
-  final String path;
+  final String mainFilepath;
 
   const Wallpaper.all(
       this.id,
@@ -52,7 +52,7 @@ class Wallpaper {
       this.thumbnails,
       this.versionCode,
       this.versionName,
-      this.path);
+      this.mainFilepath);
 
   const Wallpaper({
     this.id,
@@ -63,7 +63,7 @@ class Wallpaper {
     this.thumbnails,
     this.versionCode,
     this.versionName,
-    this.path,
+    this.mainFilepath,
   });
 
   factory Wallpaper.fromMap(Map<String, dynamic> map) {
@@ -76,7 +76,7 @@ class Wallpaper {
       thumbnails: map['thumbnails'].cast<String>(),
       versionCode: map['versionCode'] as int,
       versionName: map['versionName'] as String,
-      path: map['path'] as String,
+      mainFilepath: map['path'] as String,
     );
   }
 
@@ -90,7 +90,7 @@ class Wallpaper {
       'thumbnails': json.encode(this.thumbnails),
       'versionCode': this.versionCode,
       'versionName': this.versionName,
-      'path': this.path,
+      'path': this.mainFilepath,
     };
   }
 
@@ -138,13 +138,13 @@ class Wallpaper {
       thumbnails: thumbnails ?? this.thumbnails,
       versionCode: versionCode ?? this.versionCode,
       versionName: versionName ?? this.versionName,
-      path: path ?? this.path,
+      mainFilepath: path ?? this.mainFilepath,
     );
   }
 
   @override
   String toString() {
-    return 'Wallpaper{id: $id, wallpaperType: $wallpaperType, name: $name, description: $description, author: $author, thumbnails: $thumbnails, versionCode: $versionCode, versionName: $versionName, path: $path}';
+    return 'Wallpaper{id: $id, wallpaperType: $wallpaperType, name: $name, description: $description, author: $author, thumbnails: $thumbnails, versionCode: $versionCode, versionName: $versionName, path: $mainFilepath}';
   }
 
   @override

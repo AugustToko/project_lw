@@ -43,22 +43,19 @@ class MainActivity : FlutterActivity() {
                     startActivity(intent)
                 }
                 SET_WALLPAPER -> {
-                    val wallpaper = call.argument<Map<*, *>>("wallpaper")
-                    Log.d(TAG, "configureFlutterEngine: $wallpaper")
-                    gotoWallpaperSettings()
-
+//                    val wallpaper = call.argument<Map<*, *>>("wallpaper")
 //                    val preferences = getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE)
 //                    val editor = preferences.edit()
+//                    Log.d(TAG, "configureFlutterEngine: $wallpaper")
+                    gotoWallpaperSettings()
                 }
             }
         }
     }
 
     private fun gotoWallpaperSettings() {
-        val intent = Intent(
-                WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER)
-        intent.putExtra(WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT,
-                ComponentName(this, LWService::class.java))
+        val intent = Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER)
+        intent.putExtra(WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT, ComponentName(this, LWService::class.java))
         startActivity(intent)
     }
 }

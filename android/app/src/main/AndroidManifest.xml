@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
-        android:name="io.flutter.app.FlutterApplication"
+        android:name=".MyApplication"
         android:allowBackup="false"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
