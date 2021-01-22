@@ -49,13 +49,14 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
 
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) {
-        print((notification.metrics.pixels / 20).clamp(0, 32.0));
+        // print((notification.metrics.pixels / 20).clamp(0, 32.0));
         _valueNotifier.value = notification.metrics.pixels;
         return true;
       },
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.check),
+          elevation: 0,
           onPressed: () async {
             await SharedPreferenceUtil.setString(
                 SpfKeys.LAST_WALLPAPER, json.encode(wallpaper));
@@ -79,23 +80,23 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                 itemCount: wallpaper.thumbnails.length,
               ),
             ),
-            // Positioned.fill(
-            //   child: ClipRect(
-            //     child: ValueListenableBuilder<double>(
-            //       valueListenable: _valueNotifier,
-            //       builder: (context, value, child) {
-            //         return BackdropFilter(
-            //           filter: ImageFilter.blur(
-            //               sigmaY: (value / 20).clamp(0, 32.0).toDouble(),
-            //               sigmaX: (value / 20).clamp(0, 32.0).toDouble()),
-            //           child: Container(
-            //             color: Colors.white.withOpacity(0),
-            //           ),
-            //         );
-            //       },
-            //     ),
-            //   ),
-            // ),
+            Positioned.fill(
+              child: ClipRect(
+                child: ValueListenableBuilder<double>(
+                  valueListenable: _valueNotifier,
+                  builder: (context, value, child) {
+                    return BackdropFilter(
+                      filter: ImageFilter.blur(
+                          sigmaY: (value / 20).clamp(0, 32.0).toDouble(),
+                          sigmaX: (value / 20).clamp(0, 32.0).toDouble()),
+                      child: Container(
+                        color: Colors.white.withOpacity(0),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
             Positioned.fill(
               child: CustomScrollView(
                 // physics: const BouncingScrollPhysics(),

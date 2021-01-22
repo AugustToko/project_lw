@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -19,6 +20,23 @@ class _LibraryPageState extends State<LibraryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: LWThemeUtil.navBarHeight),
+        child: FloatingActionButton.extended(
+          elevation: 0,
+          onPressed: () async {
+            final result = await FilePicker.platform.pickFiles();
+
+            if (result == null) return;
+            final file = File(result.files.single.path);
+
+            await WallpaperTools.instance.importWallpaper(context, file);
+
+          },
+          label: Text('导入'),
+          icon: Icon(Icons.add),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: CustomScrollView(
@@ -67,6 +85,7 @@ class _LibraryPageState extends State<LibraryPage> {
                           Hero(
                             tag: 'image_${wallpaper.id}',
                             child: Container(
+                              width: double.infinity,
                               clipBehavior: Clip.antiAlias,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(16),
