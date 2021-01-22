@@ -10,6 +10,12 @@ class DataCenter extends ChangeNotifier {
 
   Future<void> init() async {
     await DataBaseHelper.instance.init();
+
+    final tempData = await DataBaseHelper.instance.db.query(Wallpaper.TABLE);
+    tempData.forEach((element) {
+      print('-------INIT-------\n$element');
+      _wallpapers.add(Wallpaper.fromMap(element));
+    });
   }
 
   var _wallpapers = <Wallpaper>[];
