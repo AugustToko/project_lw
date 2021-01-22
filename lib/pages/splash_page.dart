@@ -49,13 +49,13 @@ class _SplashPageState extends State<SplashPage> {
 
       if (isFirst) {
         _valueNotifier.value = '正在初始化第一次进入的资源';
+        await SharedPreferenceUtil.setBool(SpfKeys.FIRST, false);
 
         await WallpaperTools.instance.initPresetWallpaper(context);
       }
 
       _valueNotifier.value = '初始化资源完成';
 
-      await Future.delayed(const Duration(seconds: 2));
       MainPage.push(context);
     });
   }

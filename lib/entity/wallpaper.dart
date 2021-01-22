@@ -67,13 +67,16 @@ class Wallpaper {
   });
 
   factory Wallpaper.fromMap(Map<String, dynamic> map) {
+    final t = map['thumbnails'];
     return new Wallpaper(
       id: map['id'] as String,
       wallpaperType: WallpaperType.values[map['wallpaperType']],
       name: map['name'] as String,
       description: map['description'] as String,
       author: map['author'] as String,
-      thumbnails: map['thumbnails'].cast<String>(),
+      thumbnails: t is String
+          ? (json.decode(map['thumbnails']) as List<dynamic>).cast<String>()
+          : (t as List<dynamic>).cast<String>(),
       versionCode: map['versionCode'] as int,
       versionName: map['versionName'] as String,
       mainFilepath: map['path'] as String,
