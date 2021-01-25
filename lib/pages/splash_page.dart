@@ -1,14 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:project_lw/entity/center/data_center.dart';
-import 'package:project_lw/main_cmd.dart';
-import 'package:project_lw/misc/const.dart';
 import 'package:project_lw/pages/main_page.dart';
 import 'package:project_lw/utils/shared_prefs.dart';
 import 'package:project_lw/utils/spf_keys.dart';
-import 'package:project_lw/utils/wallpaper_file_utils.dart';
 import 'package:project_lw/utils/wallpaper_tools.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -39,6 +35,7 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+
       Map<Permission, PermissionStatus> statuses = await [
         Permission.storage,
         Permission.camera,
@@ -75,7 +72,12 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text(_valueNotifier.value ?? '正在加载...'),
+        child: ValueListenableBuilder<String>(
+          valueListenable: _valueNotifier,
+          builder: (context, value, child) {
+            return Text(value ?? '正在加载...');
+          },
+        ),
       ),
     );
   }

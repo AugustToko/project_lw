@@ -58,14 +58,16 @@ class WallpaperTools {
     }
   }
 
-  Future<void> importWallpaper(
-      final BuildContext context, final File wallpaperPack) async {
+  Future<void> importWallpaper(final BuildContext context,
+      final File wallpaperPack) async {
     if (wallpaperPack == null || !wallpaperPack.existsSync()) return;
 
     final tempDir = Directory(
       wallpaperPlaceDir.path +
           Platform.pathSeparator +
-          'temp-${DateTime.now().millisecondsSinceEpoch}',
+          'temp-${DateTime
+              .now()
+              .millisecondsSinceEpoch}',
     );
 
     tempDir.createSync();
@@ -77,14 +79,14 @@ class WallpaperTools {
     await WallpaperFileUtil.unpackWallpaper(wallpaperPack, tempDir);
 
     final config =
-        File(tempDir.path + Platform.pathSeparator + 'wallpaper.json');
+    File(tempDir.path + Platform.pathSeparator + 'wallpaper.json');
     if (!config.existsSync()) {
       await clean();
       return;
     }
 
     final wallpaper =
-        Wallpaper.fromJson(json.decode(config.readAsStringSync()));
+    Wallpaper.fromJson(json.decode(config.readAsStringSync()));
 
     if (wallpaper == null &&
         !WallpaperFileUtil.checkWallpaperConfigFile(config)) {
@@ -105,7 +107,7 @@ class WallpaperTools {
     print(newDir.path);
 
     await for (final element
-        in Stream.fromIterable(tempDir.listSync(recursive: true))) {
+    in Stream.fromIterable(tempDir.listSync(recursive: true))) {
       await element.rename(newDir.path +
           Platform.pathSeparator +
           FileUtils.basename(element.path));
@@ -150,8 +152,8 @@ class WallpaperTools {
     DataCenter.get(context).removeWallpaper(wallpaper);
   }
 
-  Future<void> importVideoFromDir(
-      BuildContext context, Directory directory) async {
+  Future<void> importVideoFromDir(BuildContext context,
+      Directory directory) async {
     if (directory == null || !directory.existsSync()) return;
 
     final files = directory.listSync();
@@ -166,7 +168,10 @@ class WallpaperTools {
     await for (final videoPath in Stream.fromIterable(target)) {
       final tempName = directory.path +
           Platform.pathSeparator +
-          '${DateTime.now().millisecondsSinceEpoch}.png';
+          '${DateTime
+              .now()
+              .millisecondsSinceEpoch}.png';
+
       final result = await _flutterFFmpeg.executeWithArguments([
         // '-ss',
         // '00:01:00',
@@ -230,6 +235,7 @@ class WallpaperTools {
       //     FileUtils.basename(thumbnailFile.path));
 
       final videoFile = File(videoPath);
+
       await videoFile.copy(targetDir.path +
           Platform.pathSeparator +
           FileUtils.basename(videoFile.path));
@@ -251,18 +257,18 @@ extension WallpaperExt on Wallpaper {
   List<String> getAllThumbnailPath() {
     return thumbnails
         .map((e) =>
-            WallpaperTools.instance.wallpaperPlaceDir.path +
-            Platform.pathSeparator +
-            id +
-            Platform.pathSeparator +
-            e)
+    WallpaperTools.instance.wallpaperPlaceDir.path +
+        Platform.pathSeparator +
+        id +
+        Platform.pathSeparator +
+        e)
         .toList();
   }
 
   String getDirPath() =>
       WallpaperTools.instance.wallpaperPlaceDir.path +
-      Platform.pathSeparator +
-      id;
+          Platform.pathSeparator +
+          id;
 
   Future<WallpaperExtInfo> extInfo() async {
     final dirPath = this.getDirPath();
