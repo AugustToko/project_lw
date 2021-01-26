@@ -60,7 +60,7 @@ class _LibraryPageState extends State<LibraryPage> {
 
                         if (path == null) return;
 
-                        await DialogUtil.showBlurDialog(
+                        DialogUtil.showBlurDialog(
                             context, (context) => LoadingDialog(text: '正在加载'));
 
                         final targetDir = Directory(path);
@@ -78,6 +78,25 @@ class _LibraryPageState extends State<LibraryPage> {
                       title: Text('导入文件夹-壁纸包'),
                       leading: Icon(Icons.all_inbox_rounded),
                       subtitle: Text('导入指定文件夹下的 lwpak 文件'),
+                    ),
+                    ListTile(
+                      title: Text('导入图片'),
+                      leading: Icon(Icons.image),
+                      subtitle: Text('导入静态图片作为壁纸'),
+                      onTap: () async {
+                        final result = await FilePicker.platform
+                            .pickFiles(type: FileType.image, allowMultiple: true);
+
+                        if (result == null) return;
+
+                        DialogUtil.showBlurDialog(
+                            context, (context) => LoadingDialog(text: '正在加载'));
+
+                        await WallpaperTools.instance.importImage(
+                            context, result.files.map((e) => e.path).toList());
+
+                        Navigator.pop(context);
+                      },
                     )
                   ],
                 ));
@@ -172,8 +191,9 @@ class _LibraryPageState extends State<LibraryPage> {
                                       clipBehavior: Clip.antiAlias,
                                       decoration: BoxDecoration(
                                           color: Colors.white.withOpacity(0.8),
-                                          borderRadius: const BorderRadius.vertical(
-                                              bottom: Radius.circular(16))),
+                                          borderRadius:
+                                              const BorderRadius.vertical(
+                                                  bottom: Radius.circular(16))),
                                       padding: const EdgeInsets.all(12),
                                       child: Column(
                                         mainAxisAlignment:

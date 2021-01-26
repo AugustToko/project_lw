@@ -243,6 +243,112 @@ class WallpaperTools {
       await DataCenter.get(context).addWallpaper(wallpaperConfig);
     }
   }
+
+  Future<void> importImage(BuildContext context, List<String> files) async {
+    if (files == null || files.isEmpty) return;
+
+    final target = <String>[];
+
+    files.forEach((element) {
+      if (element.endsWith('.png') || element.endsWith('.jpg'))
+        target.add(element);
+    });
+
+    await for (final itemPath in Stream.fromIterable(target)) {
+      print('importImageFromDir: $itemPath');
+      final item = File(itemPath);
+      final fileName = FileUtils.basename(itemPath);
+
+      final id = uuid.v1();
+
+      final wallpaperConfig = Wallpaper(
+        id: id,
+        name: fileName,
+        author: 'Unknown',
+        description: 'None',
+        mainFilepath: fileName,
+        thumbnails: [fileName],
+        versionCode: 1,
+        versionName: '1.0',
+        wallpaperType: WallpaperType.IMAGE,
+      );
+
+      final targetDir = Directory(
+        WallpaperTools.instance.wallpaperPlaceDir.path +
+            Platform.pathSeparator +
+            wallpaperConfig.id,
+      );
+
+      targetDir.createSync();
+
+      item.copySync(wallpaperPlaceDir.path +
+          Platform.pathSeparator +
+          '$id' +
+          Platform.pathSeparator +
+          fileName);
+
+      final configFile = File(targetDir.path +
+          Platform.pathSeparator +
+          WallpaperFileUtil.WALLPAPER_INFO_FILE_NAME);
+
+      configFile.writeAsStringSync(json.encode(wallpaperConfig));
+
+      await DataCenter.get(context).addWallpaper(wallpaperConfig);
+    }
+  }
+
+  /// 导入指定目录下的所有视频图片（层级1）
+  Future<void> importImageFromDir(
+      BuildContext context, Directory directory) async {
+    if (directory == null || !directory.existsSync()) return;
+
+    final files = directory.listSync();
+    final target = <String>[];
+
+    files.forEach((element) {
+      if (element.path.endsWith('png') || element.path.endsWith('jpg'))
+        target.add(element.path);
+    });
+
+    await for (final itemPath in Stream.fromIterable(target)) {
+      print('importImageFromDir: $itemPath');
+      final item = File(itemPath);
+
+      item.copySync(directory.path +
+          Platform.pathSeparator +
+          FileUtils.basename(itemPath));
+
+      final fileName = FileUtils.basename(itemPath);
+
+      final wallpaperConfig = Wallpaper(
+        id: uuid.v1(),
+        name: fileName,
+        author: 'Unknown',
+        description: 'None',
+        mainFilepath: fileName,
+        thumbnails: [fileName],
+        versionCode: 1,
+        versionName: '1.0',
+        wallpaperType: WallpaperType.IMAGE,
+      );
+
+      final targetDir = Directory(
+        WallpaperTools.instance.wallpaperPlaceDir.path +
+            Platform.pathSeparator +
+            wallpaperConfig.id,
+      );
+
+      targetDir.createSync();
+
+      final configFile = File(targetDir.path +
+          Platform.pathSeparator +
+          WallpaperFileUtil.WALLPAPER_INFO_FILE_NAME);
+
+      configFile.writeAsStringSync(json.encode(wallpaperConfig));
+
+      await DataCenter.get(context).addWallpaper(wallpaperConfig);
+    }
+  }
 }
 
 extension WallpaperExt on Wallpaper {
@@ -278,6 +384,6 @@ extension WallpaperExt on Wallpaper {
         .toList();
     final size = (await Directory(dirPath).stat()).size;
 
-    return WallpaperExtInfo(dirPath, allPath, size, true);
+    return WallpaperExtInfo(dirPath, allPath, size, false);
   }
 }
