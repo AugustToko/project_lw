@@ -58,6 +58,8 @@ class WallpaperTools {
     }
   }
 
+  /// 导入壁纸包
+  /// [wallpaperPack] 壁纸包文件
   Future<void> importWallpaper(
       final BuildContext context, final File wallpaperPack) async {
     if (wallpaperPack == null || !wallpaperPack.existsSync()) return;
@@ -76,8 +78,9 @@ class WallpaperTools {
 
     await WallpaperFileUtil.unpackWallpaper(wallpaperPack, tempDir);
 
-    final config =
-        File(tempDir.path + Platform.pathSeparator + 'wallpaper.json');
+    final config = File(tempDir.path +
+        Platform.pathSeparator +
+        WallpaperFileUtil.WALLPAPER_INFO_FILE_NAME);
     if (!config.existsSync()) {
       await clean();
       return;
@@ -101,9 +104,6 @@ class WallpaperTools {
 
     newDir.createSync();
 
-    print('----------------------------------------');
-    print(newDir.path);
-
     await for (final element
         in Stream.fromIterable(tempDir.listSync(recursive: true))) {
       await element.rename(newDir.path +
@@ -118,6 +118,8 @@ class WallpaperTools {
     await DataCenter.get(context).addWallpaper(wallpaper);
   }
 
+  /// 分享壁纸包
+  /// [wallpaper] 指定的壁纸包
   Future<void> shareWallpaper(Wallpaper wallpaper) async {
     final dir = Directory(wallpaper.getDirPath());
 
@@ -150,6 +152,7 @@ class WallpaperTools {
     DataCenter.get(context).removeWallpaper(wallpaper);
   }
 
+  /// 导入指定目录下的所有视频（层级1）
   Future<void> importVideoFromDir(
       BuildContext context, Directory directory) async {
     if (directory == null || !directory.existsSync()) return;
@@ -158,7 +161,8 @@ class WallpaperTools {
     final target = <String>[];
 
     files.forEach((element) {
-      if (element.path.endsWith('mp4')) target.add(element.path);
+      if (element.path.endsWith(WallpaperFileUtil.SUPPORTED_VIDEO_FORMAT))
+        target.add(element.path);
     });
 
     final FlutterFFmpeg _flutterFFmpeg = FlutterFFmpeg();

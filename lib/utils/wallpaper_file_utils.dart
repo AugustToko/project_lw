@@ -10,6 +10,8 @@ class WallpaperFileUtil {
   static const WALLPAPER_INFO_FILE_NAME = 'wallpaper.json';
   static const VIEW_INFO_FILE_NAME = 'view_config.json';
   static const PACK_NAME = 'wallpaper.$SUPPORTED_WALLPAPER_FORMAT';
+  static const TEMP_TAR_NAME = 'content.tar';
+  static const TEMP_FOLDER_NAME = '.temp';
 
   static const SUPPORTED_WALLPAPER_FORMAT = 'lwpak';
   static const SUPPORTED_IMAGE_FORMAT = 'webp';
@@ -77,7 +79,7 @@ class WallpaperFileUtil {
     final fileList = wallpaperSource.listSync(recursive: true);
 
     final tempDir =
-        Directory(wallpaperSource.path + Platform.pathSeparator + '.temp');
+        Directory(wallpaperSource.path + Platform.pathSeparator + TEMP_FOLDER_NAME);
     tempDir.createSync();
 
     await for (final element in Stream.fromIterable(fileList)) {
@@ -88,7 +90,7 @@ class WallpaperFileUtil {
 
     final tarEncoder = TarFileEncoder();
     tarEncoder
-        .create(wallpaperSource.path + Platform.pathSeparator + 'content.tar');
+        .create(wallpaperSource.path + Platform.pathSeparator + TEMP_TAR_NAME);
     tarEncoder.addDirectory(tempDir);
 
     final fileListNew = tempDir.listSync(recursive: true);

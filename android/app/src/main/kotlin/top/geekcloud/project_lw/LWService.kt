@@ -61,14 +61,7 @@ class LWService : WallpaperService() {
     }
 
     override fun onCreateEngine(): Engine {
-        Log.d(TAG, "onCreateEngine: ")
-        val preferences = getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE)
-        val wallpaper = preferences.getString("flutter.LAST_WALLPAPER", null)
-                ?: return EmptyWallpaperEngine()
-
-        Log.d(TAG, "----------------------onCreateEngine: $wallpaper")
-
-        val wallpaperObj = Gson().fromJson(wallpaper, Wallpaper::class.java)
+        val wallpaperObj = WallpaperUtils.getCurrentWallpaper(this)
 
         return when (wallpaperObj.wallpaperType) {
             Wallpaper.HTML -> WebWallpaperEngine(this, wallpaperObj)
@@ -267,7 +260,7 @@ class LWService : WallpaperService() {
             val dataSourceFactory: DataSource.Factory = DefaultDataSourceFactory(
                     context, Util.getUserAgent(context, "xyz.alynx.livewallpaper")
             )
-            
+
             // ExoPlayer can load file:///android_asset/ uri correctly.
             videoSource = ProgressiveMediaSource.Factory(
                     dataSourceFactory

@@ -5,10 +5,12 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.BitmapFactory
 import android.util.Log
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
+import top.geekcloud.project_lw.entity.Wallpaper
 
 class MainActivity : FlutterActivity() {
     private val flutterChannelName = "lingyun_lw_channel_1"
@@ -43,11 +45,17 @@ class MainActivity : FlutterActivity() {
                     startActivity(intent)
                 }
                 SET_WALLPAPER -> {
-//                    val wallpaper = call.argument<Map<*, *>>("wallpaper")
-//                    val preferences = getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE)
+                    val wallpaperObj = WallpaperUtils.getCurrentWallpaper(this)
+
+                    if (wallpaperObj.wallpaperType == Wallpaper.IMAGE) {
+                        val wm = WallpaperManager.getInstance(this)
+                        wm.setBitmap(BitmapFactory.decodeFile(wallpaperObj.getRealPath(this)))
+                    } else {
+                        //                    val preferences = getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE)
 //                    val editor = preferences.edit()
 //                    Log.d(TAG, "configureFlutterEngine: $wallpaper")
-                    gotoWallpaperSettings()
+                        gotoWallpaperSettings()
+                    }
                 }
             }
         }
