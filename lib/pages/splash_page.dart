@@ -52,9 +52,6 @@ class _SplashPageState extends State<SplashPage> {
 
       await WallpaperTools.instance.init();
 
-      await WallpaperTools.instance.importVideoFromDir(
-          context, Directory('/sdcard/Pictures/Screenshots'));
-
       if (isFirst) {
         _valueNotifier.value = '正在初始化第一次进入的资源';
         await SharedPreferenceUtil.setBool(SpfKeys.FIRST, false);

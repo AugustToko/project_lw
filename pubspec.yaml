@@ -44,7 +44,7 @@ dependencies:
   lingyun_widget:
     git:
       url: 'https://github.com/AugustToko/lingyun_widget.git'
-      ref: '0.0.3'
+      ref: '0.0.5'
 
   es_compression: ^0.9.9
   archive: ^2.0.13

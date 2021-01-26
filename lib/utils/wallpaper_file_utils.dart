@@ -61,8 +61,8 @@ class WallpaperFileUtil {
 
     if (!jsonFile.existsSync()) return null;
 
-    final Wallpaper wallpaper =
-        Wallpaper.fromJson(json.decode(jsonFile.readAsStringSync()));
+    final Wallpaper wallpaper = Wallpaper.fromJson(
+        json.decode(jsonFile.readAsStringSync()) as Map<String, dynamic>);
 
     return wallpaper;
   }
@@ -123,8 +123,8 @@ class WallpaperFileUtil {
 
     Wallpaper wallpaper;
     try {
-      wallpaper =
-          Wallpaper.fromJson(json.decode(file.readAsStringSync()));
+      wallpaper = Wallpaper.fromJson(
+          json.decode(file.readAsStringSync()) as Map<String, dynamic>);
     } catch (e, s) {
       print(e);
       print(s);

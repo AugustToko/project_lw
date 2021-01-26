@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -29,7 +28,7 @@ class _LibraryPageState extends State<LibraryPage> {
         child: FloatingActionButton.extended(
           elevation: 0,
           onPressed: () async {
-            SheetUtils.showSheetNoAPNoBlurCommon(
+            await SheetUtils.showSheetNoAPNoBlurCommon(
                 context,
                 Column(
                   mainAxisSize: MainAxisSize.min,
@@ -44,11 +43,11 @@ class _LibraryPageState extends State<LibraryPage> {
                         await WallpaperTools.instance
                             .importWallpaper(context, file);
                       },
-                      leading: Icon(Icons.move_to_inbox_rounded),
-                      title: Text('导入文件'),
-                      subtitle: Text('导入 lwpak 壁纸文件'),
+                      leading: const Icon(Icons.move_to_inbox_rounded),
+                      title: const Text('导入文件'),
+                      subtitle: const Text('导入 lwpak 壁纸文件'),
                     ),
-                    ListTile(
+                    const ListTile(
                       title: Text('导入 URL'),
                       leading: Icon(Icons.web_asset),
                       subtitle: Text('导入一个网站'),
@@ -61,7 +60,7 @@ class _LibraryPageState extends State<LibraryPage> {
 
                         if (path == null) return;
 
-                        DialogUtil.showBlurDialog(
+                        await DialogUtil.showBlurDialog(
                             context, (context) => LoadingDialog(text: '正在加载'));
 
                         final targetDir = Directory(path);
@@ -71,11 +70,11 @@ class _LibraryPageState extends State<LibraryPage> {
                             .importVideoFromDir(context, targetDir);
                         Navigator.pop(context);
                       },
-                      title: Text('导入文件夹-视频'),
-                      leading: Icon(Icons.movie_creation_outlined),
-                      subtitle: Text('导入指定文件夹下的视频'),
+                      title: const Text('导入文件夹-视频'),
+                      leading: const Icon(Icons.movie_creation_outlined),
+                      subtitle: const Text('导入指定文件夹下的视频'),
                     ),
-                    ListTile(
+                    const ListTile(
                       title: Text('导入文件夹-壁纸包'),
                       leading: Icon(Icons.all_inbox_rounded),
                       subtitle: Text('导入指定文件夹下的 lwpak 文件'),
@@ -83,8 +82,8 @@ class _LibraryPageState extends State<LibraryPage> {
                   ],
                 ));
           },
-          label: Text('导入'),
-          icon: Icon(Icons.add),
+          label: const Text('导入'),
+          icon: const Icon(Icons.add),
         ),
       ),
       body: Padding(
@@ -127,15 +126,15 @@ class _LibraryPageState extends State<LibraryPage> {
 
                     return CupertinoContextMenu(
                       actions: [
-                        CupertinoContextMenuAction(
+                        const CupertinoContextMenuAction(
                           child: Text('喜爱'),
                           trailingIcon: Icons.favorite,
                         ),
-                        CupertinoContextMenuAction(
+                        const CupertinoContextMenuAction(
                           child: Text('分享'),
                           trailingIcon: Icons.ios_share,
                         ),
-                        CupertinoContextMenuAction(
+                        const CupertinoContextMenuAction(
                           child: Text('删除'),
                           trailingIcon: Icons.delete,
                         )
@@ -173,7 +172,7 @@ class _LibraryPageState extends State<LibraryPage> {
                                       clipBehavior: Clip.antiAlias,
                                       decoration: BoxDecoration(
                                           color: Colors.white.withOpacity(0.8),
-                                          borderRadius: BorderRadius.vertical(
+                                          borderRadius: const BorderRadius.vertical(
                                               bottom: Radius.circular(16))),
                                       padding: const EdgeInsets.all(12),
                                       child: Column(

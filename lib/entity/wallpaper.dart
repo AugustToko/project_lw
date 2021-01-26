@@ -68,14 +68,14 @@ class Wallpaper {
 
   factory Wallpaper.fromMap(Map<String, dynamic> map) {
     final t = map['thumbnails'];
-    return new Wallpaper(
+    return Wallpaper(
       id: map['id'] as String,
-      wallpaperType: WallpaperType.values[map['wallpaperType']],
+      wallpaperType: WallpaperType.values[map['wallpaperType'] as int],
       name: map['name'] as String,
       description: map['description'] as String,
       author: map['author'] as String,
       thumbnails: t is String
-          ? (json.decode(map['thumbnails']) as List<dynamic>).cast<String>()
+          ? (json.decode(map['thumbnails'] as String) as List<dynamic>).cast<String>()
           : (t as List<dynamic>).cast<String>(),
       versionCode: map['versionCode'] as int,
       versionName: map['versionName'] as String,
@@ -85,15 +85,15 @@ class Wallpaper {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': this.id,
-      'wallpaperType': this.wallpaperType.index,
-      'name': this.name,
-      'description': this.description,
-      'author': this.author,
-      'thumbnails': json.encode(this.thumbnails),
-      'versionCode': this.versionCode,
-      'versionName': this.versionName,
-      'path': this.mainFilepath,
+      'id': id,
+      'wallpaperType': wallpaperType.index,
+      'name': name,
+      'description': description,
+      'author': author,
+      'thumbnails': json.encode(thumbnails),
+      'versionCode': versionCode,
+      'versionName': versionName,
+      'path': mainFilepath,
     };
   }
 
@@ -117,7 +117,7 @@ class Wallpaper {
     return toMap();
   }
 
-  factory Wallpaper.fromJson(dynamic map) {
+  factory Wallpaper.fromJson(Map<String, dynamic> map) {
     return Wallpaper.fromMap(map);
   }
 

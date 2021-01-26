@@ -218,8 +218,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.0.3"
-      resolved-ref: cc850d78e373013e22e33e830f1494853f853989
+      ref: "0.0.5"
+      resolved-ref: f60bdf28b467aeef2aec55619a7900173f4135ee
       url: "https://github.com/AugustToko/lingyun_widget.git"
     source: git
     version: "0.0.3"
