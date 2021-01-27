@@ -212,8 +212,8 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                                   ),
                                   ListTile(
                                     title: Text('壁纸类型'),
-                                    subtitle:
-                                        Text('${wallpaper.wallpaperType}'),
+                                    subtitle: Text(
+                                        '${wallpaper.wallpaperType.name()}'),
                                   ),
                                   ListTile(
                                     title: Text('版本信息'),
@@ -238,7 +238,8 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                                   ),
                                   ListTile(
                                     title: Text('大小'),
-                                    subtitle: Text('${data.size} kb'),
+                                    subtitle: Text(
+                                        '${(data.size / 1024 / 1024).round()} MB'),
                                   ),
                                   ListTile(
                                     title: Text('验证信息'),

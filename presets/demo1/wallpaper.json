@@ -9,6 +9,9 @@
     "thumbnail2.webp",
     "thumbnail3.webp"
   ],
+  "tags": [
+    "NONE"
+  ],
   "versionCode": 1,
   "versionName": "1.0",
   "path": "trailer.mp4"

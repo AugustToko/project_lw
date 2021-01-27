@@ -45,6 +45,8 @@ class MainActivity : FlutterActivity() {
                     startActivity(intent)
                 }
                 SET_WALLPAPER -> {
+                    WallpaperManager.getInstance(this).clear()
+
                     val wallpaperObj = WallpaperUtils.getCurrentWallpaper(this)
 
                     if (wallpaperObj.wallpaperType == Wallpaper.IMAGE) {

@@ -152,23 +152,25 @@ class WallpaperTools {
     DataCenter.get(context).removeWallpaper(wallpaper);
   }
 
-  /// 导入指定目录下的所有视频（层级1）
-  Future<void> importVideoFromDir(
-      BuildContext context, Directory directory) async {
-    if (directory == null || !directory.existsSync()) return;
+  Future<void> importVideo(BuildContext context, List<String> files) async {
+    if (files == null || files.isEmpty) return;
 
-    final files = directory.listSync();
     final target = <String>[];
 
     files.forEach((element) {
-      if (element.path.endsWith(WallpaperFileUtil.SUPPORTED_VIDEO_FORMAT))
-        target.add(element.path);
+      if (element.endsWith(WallpaperFileUtil.SUPPORTED_VIDEO_FORMAT))
+        target.add(element);
     });
 
     final FlutterFFmpeg _flutterFFmpeg = FlutterFFmpeg();
 
     await for (final videoPath in Stream.fromIterable(target)) {
-      final tempName = directory.path +
+      final item = File(videoPath);
+      final fileName = FileUtils.basename(videoPath);
+
+      final id = uuid.v1();
+
+      final tempName = item.parent.path +
           Platform.pathSeparator +
           '${DateTime.now().millisecondsSinceEpoch}.png';
 
@@ -195,12 +197,13 @@ class WallpaperTools {
       if (result != 0 || !File(tempName).existsSync()) continue;
 
       final wallpaperConfig = Wallpaper(
-          id: uuid.v1(),
-          name: FileUtils.basename(videoPath),
+          id: id,
+          name: fileName,
           author: 'Unknown',
           description: 'None',
-          mainFilepath: FileUtils.basename(videoPath),
+          mainFilepath: fileName,
           thumbnails: ['thumbnail1.png'],
+          tags: ['NONE'],
           versionCode: 1,
           versionName: '1.0',
           wallpaperType: WallpaperType.VIDEO);
@@ -297,62 +300,100 @@ class WallpaperTools {
     }
   }
 
-  /// 导入指定目录下的所有视频图片（层级1）
-  Future<void> importImageFromDir(
-      BuildContext context, Directory directory) async {
-    if (directory == null || !directory.existsSync()) return;
+  Future<void> importUrl(BuildContext context, String url) async {
+    if (url == null || url.trim().isEmpty) return;
+    print('importUrl--------------$url');
 
-    final files = directory.listSync();
-    final target = <String>[];
+    final id = uuid.v1();
 
-    files.forEach((element) {
-      if (element.path.endsWith('png') || element.path.endsWith('jpg'))
-        target.add(element.path);
-    });
+    final wallpaperConfig = Wallpaper(
+      id: id,
+      name: url,
+      author: 'Unknown',
+      description: 'None',
+      mainFilepath: url,
+      thumbnails: [],
+      versionCode: 1,
+      versionName: '1.0',
+      wallpaperType: WallpaperType.HTML,
+      tags: []
+    );
 
-    await for (final itemPath in Stream.fromIterable(target)) {
-      print('importImageFromDir: $itemPath');
-      final item = File(itemPath);
-
-      item.copySync(directory.path +
+    final targetDir = Directory(
+      WallpaperTools.instance.wallpaperPlaceDir.path +
           Platform.pathSeparator +
-          FileUtils.basename(itemPath));
+          wallpaperConfig.id,
+    );
 
-      final fileName = FileUtils.basename(itemPath);
+    targetDir.createSync();
 
-      final wallpaperConfig = Wallpaper(
-        id: uuid.v1(),
-        name: fileName,
-        author: 'Unknown',
-        description: 'None',
-        mainFilepath: fileName,
-        thumbnails: [fileName],
-        versionCode: 1,
-        versionName: '1.0',
-        wallpaperType: WallpaperType.IMAGE,
-      );
+    final configFile = File(targetDir.path +
+        Platform.pathSeparator +
+        WallpaperFileUtil.WALLPAPER_INFO_FILE_NAME);
 
-      final targetDir = Directory(
-        WallpaperTools.instance.wallpaperPlaceDir.path +
-            Platform.pathSeparator +
-            wallpaperConfig.id,
-      );
+    configFile.writeAsStringSync(json.encode(wallpaperConfig));
 
-      targetDir.createSync();
-
-      final configFile = File(targetDir.path +
-          Platform.pathSeparator +
-          WallpaperFileUtil.WALLPAPER_INFO_FILE_NAME);
-
-      configFile.writeAsStringSync(json.encode(wallpaperConfig));
-
-      await DataCenter.get(context).addWallpaper(wallpaperConfig);
-    }
+    await DataCenter.get(context).addWallpaper(wallpaperConfig);
+    print(DataCenter.get(context).wallpapers);
   }
+
+// /// 导入指定目录下的所有视频图片（层级1）
+// Future<void> importImageFromDir(BuildContext context,
+//     Directory directory) async {
+//   if (directory == null || !directory.existsSync()) return;
+//
+//   final files = directory.listSync();
+//   final target = <String>[];
+//
+//   files.forEach((element) {
+//     if (element.path.endsWith('png') || element.path.endsWith('jpg'))
+//       target.add(element.path);
+//   });
+//
+//   await for (final itemPath in Stream.fromIterable(target)) {
+//     print('importImageFromDir: $itemPath');
+//     final item = File(itemPath);
+//
+//     item.copySync(directory.path +
+//         Platform.pathSeparator +
+//         FileUtils.basename(itemPath));
+//
+//     final fileName = FileUtils.basename(itemPath);
+//
+//     final wallpaperConfig = Wallpaper(
+//       id: uuid.v1(),
+//       name: fileName,
+//       author: 'Unknown',
+//       description: 'None',
+//       mainFilepath: fileName,
+//       thumbnails: [fileName],
+//       versionCode: 1,
+//       versionName: '1.0',
+//       wallpaperType: WallpaperType.IMAGE,
+//     );
+//
+//     final targetDir = Directory(
+//       WallpaperTools.instance.wallpaperPlaceDir.path +
+//           Platform.pathSeparator +
+//           wallpaperConfig.id,
+//     );
+//
+//     targetDir.createSync();
+//
+//     final configFile = File(targetDir.path +
+//         Platform.pathSeparator +
+//         WallpaperFileUtil.WALLPAPER_INFO_FILE_NAME);
+//
+//     configFile.writeAsStringSync(json.encode(wallpaperConfig));
+//
+//     await DataCenter.get(context).addWallpaper(wallpaperConfig);
+//   }
+// }
 }
 
 extension WallpaperExt on Wallpaper {
   String getMainThumbnailPath() {
+    if (thumbnails.isEmpty) return null;
     return WallpaperTools.instance.wallpaperPlaceDir.path +
         Platform.pathSeparator +
         id +
@@ -377,13 +418,34 @@ extension WallpaperExt on Wallpaper {
       id;
 
   Future<WallpaperExtInfo> extInfo() async {
+    List<String> getAllFilePath(Directory directory) {
+      if (directory == null) return [];
+      final data = <String>[];
+      directory.listSync().forEach((element) {
+        final temp = Directory(element.path);
+        if (temp.existsSync()) {
+          return getAllFilePath(temp);
+        } else {
+          data.add(element.path);
+        }
+      });
+      return data;
+    }
+
     final dirPath = this.getDirPath();
     final allPath = Directory(dirPath)
         .listSync(recursive: true)
         .map((e) => e.path)
         .toList();
-    final size = (await Directory(dirPath).stat()).size;
 
-    return WallpaperExtInfo(dirPath, allPath, size, false);
+    int len = 0;
+
+    final all = getAllFilePath(Directory(dirPath));
+
+    all.forEach((element) {
+      len += File(element).lengthSync();
+    });
+
+    return WallpaperExtInfo(dirPath, allPath, len, false);
   }
 }

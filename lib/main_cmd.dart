@@ -10,19 +10,6 @@ final uuid = Uuid();
 Future<void> main() async {
   await WallpaperFileUtil.packWallpaper(
     Directory(
-        'C:\\Users\\chenlongcould\\AndroidStudioProjects\\project_lw\\presets\\demo5'),
+        'C:\\Users\\chenlongcould\\AndroidStudioProjects\\project_lw\\presets\\demo6'),
   );
-}
-
-void testJson() {
-  print(json.encode(Wallpaper.all(
-      '1',
-      WallpaperType.HTML,
-      'TEST1',
-      'description',
-      'author',
-      ['asd', 'asdasd'],
-      1,
-      'Fuck',
-      'http://fff.cmiscm.com/#!/section/cylinder')));
 }

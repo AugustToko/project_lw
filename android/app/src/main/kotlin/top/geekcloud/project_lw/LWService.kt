@@ -66,7 +66,7 @@ class LWService : WallpaperService() {
         return when (wallpaperObj.wallpaperType) {
             Wallpaper.HTML -> WebWallpaperEngine(this, wallpaperObj)
             Wallpaper.VIDEO -> GLWallpaperEngine(this, wallpaperObj)
-            Wallpaper.VIEW -> WebWallpaperEngine(this, wallpaperObj)
+            Wallpaper.VIEW -> null!!
             Wallpaper.IMAGE -> null!!
             else -> EmptyWallpaperEngine()
         }
@@ -444,9 +444,14 @@ class LWService : WallpaperService() {
 
             Log.d(TAG, "onCreate: ${wallpaper.getRealPath(this@LWService)}")
 
+            if (wallpaper.getRealPath(this@LWService).startsWith("http")) {
+                myWebView!!.loadUrl(wallpaper.getRealPath(this@LWService))
+            } else {
+                myWebView!!.loadUrl("file://" + wallpaper.getRealPath(this@LWService))
+            }
+
 //            myWebView!!.addJavascriptInterface(JSInterface(), "androidWallpaperInterface")
 //            myWebView!!.loadUrl("file:///android_asset/demo1/index.html")
-            myWebView!!.loadUrl("file://" + wallpaper.getRealPath(this@LWService))
 //            myWebView!!.loadUrl("https://www.uberviz.io/viz/splice/")
         }
 

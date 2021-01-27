@@ -47,45 +47,43 @@ class _LibraryPageState extends State<LibraryPage> {
                       title: const Text('导入文件'),
                       subtitle: const Text('导入 lwpak 壁纸文件'),
                     ),
-                    const ListTile(
+                    ListTile(
                       title: Text('导入 URL'),
                       leading: Icon(Icons.web_asset),
                       subtitle: Text('导入一个网站'),
-                      enabled: false,
-                    ),
-                    ListTile(
-                      onTap: () async {
-                        final path =
-                            await FilePicker.platform.getDirectoryPath();
-
-                        if (path == null) return;
-
-                        DialogUtil.showBlurDialog(
-                            context, (context) => LoadingDialog(text: '正在加载'));
-
-                        final targetDir = Directory(path);
-                        print(targetDir.listSync());
-
-                        await WallpaperTools.instance
-                            .importVideoFromDir(context, targetDir);
-                        Navigator.pop(context);
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            final ctl = TextEditingController();
+                            return AlertDialog(
+                              title: Text('添加一个 URL'),
+                              content: SizedBox(
+                                width: 300,
+                                child: TextField(
+                                  controller: ctl,
+                                ),
+                              ),
+                              actions: [
+                                FlatButton(
+                                    onPressed: () async {
+                                      await WallpaperTools.instance
+                                          .importUrl(context, ctl.text);
+                                    },
+                                    child: Text('添加'))
+                              ],
+                            );
+                          },
+                        );
                       },
-                      title: const Text('导入文件夹-视频'),
-                      leading: const Icon(Icons.movie_creation_outlined),
-                      subtitle: const Text('导入指定文件夹下的视频'),
-                    ),
-                    const ListTile(
-                      title: Text('导入文件夹-壁纸包'),
-                      leading: Icon(Icons.all_inbox_rounded),
-                      subtitle: Text('导入指定文件夹下的 lwpak 文件'),
                     ),
                     ListTile(
                       title: Text('导入图片'),
                       leading: Icon(Icons.image),
                       subtitle: Text('导入静态图片作为壁纸'),
                       onTap: () async {
-                        final result = await FilePicker.platform
-                            .pickFiles(type: FileType.image, allowMultiple: true);
+                        final result = await FilePicker.platform.pickFiles(
+                            type: FileType.image, allowMultiple: true);
 
                         if (result == null) return;
 
@@ -97,7 +95,32 @@ class _LibraryPageState extends State<LibraryPage> {
 
                         Navigator.pop(context);
                       },
-                    )
+                    ),
+                    Divider(),
+                    ListTile(
+                      onTap: () async {
+                        final result = await FilePicker.platform.pickFiles(
+                            type: FileType.video, allowMultiple: true);
+
+                        if (result == null) return;
+
+                        DialogUtil.showBlurDialog(
+                            context, (context) => LoadingDialog(text: '正在加载'));
+
+                        await WallpaperTools.instance.importVideo(
+                            context, result.files.map((e) => e.path).toList());
+                        Navigator.pop(context);
+                      },
+                      title: const Text('导入视频'),
+                      leading: const Icon(Icons.movie_creation_outlined),
+                      subtitle: const Text('导入视频作为壁纸'),
+                    ),
+                    // const ListTile(
+                    //   title: Text('导入文件夹-壁纸包'),
+                    //   leading: Icon(Icons.all_inbox_rounded),
+                    //   subtitle: Text('导入指定文件夹下的 lwpak 文件'),
+                    //   enabled: false,
+                    // ),
                   ],
                 ));
           },
@@ -152,10 +175,16 @@ class _LibraryPageState extends State<LibraryPage> {
                         const CupertinoContextMenuAction(
                           child: Text('分享'),
                           trailingIcon: Icons.ios_share,
+                          onPressed: null,
                         ),
-                        const CupertinoContextMenuAction(
+                        CupertinoContextMenuAction(
                           child: Text('删除'),
                           trailingIcon: Icons.delete,
+                          onPressed: () {
+                            WallpaperTools.instance
+                                .removeWallpaper(context, wallpaper);
+                            Navigator.pop(context);
+                          },
                         )
                       ],
                       child: Stack(
@@ -168,11 +197,16 @@ class _LibraryPageState extends State<LibraryPage> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(16),
                               ),
-                              child: Image.file(
-                                File(wallpaper.getMainThumbnailPath()),
-                                height: 300,
-                                fit: BoxFit.cover,
-                              ),
+                              child: wallpaper.getMainThumbnailPath() == null
+                                  ? const SizedBox(
+                                      width: 300,
+                                      height: 300,
+                                    )
+                                  : Image.file(
+                                      File(wallpaper.getMainThumbnailPath()),
+                                      height: 300,
+                                      fit: BoxFit.cover,
+                                    ),
                             ),
                           ),
                           Positioned.fill(

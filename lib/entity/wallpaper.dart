@@ -14,6 +14,22 @@ enum WallpaperType {
   IMAGE,
 }
 
+extension WallpaperTypeExt on WallpaperType {
+  String name() {
+    switch (this) {
+      case WallpaperType.HTML:
+        return 'HTML';
+      case WallpaperType.VIDEO:
+        return '视频';
+      case WallpaperType.VIEW:
+        return 'VIEW';
+      case WallpaperType.IMAGE:
+        return '图像';
+    }
+    return null;
+  }
+}
+
 class Wallpaper {
   static const TABLE = 'wallpaper';
 
@@ -24,6 +40,7 @@ class Wallpaper {
       "description TEXT, "
       "author TEXT, "
       "thumbnails TEXT, "
+      "tags TEXT, "
       "versionCode INTEGER,"
       "versionName TEXT,"
       "path TEXT"
@@ -35,6 +52,7 @@ class Wallpaper {
   final String description;
   final String author;
   final List<String> thumbnails;
+  final List<String> tags;
   final int versionCode;
   final String versionName;
 
@@ -50,6 +68,7 @@ class Wallpaper {
       this.description,
       this.author,
       this.thumbnails,
+      this.tags,
       this.versionCode,
       this.versionName,
       this.mainFilepath);
@@ -59,6 +78,7 @@ class Wallpaper {
     this.wallpaperType,
     this.name,
     this.description,
+    this.tags,
     this.author,
     this.thumbnails,
     this.versionCode,
@@ -68,6 +88,8 @@ class Wallpaper {
 
   factory Wallpaper.fromMap(Map<String, dynamic> map) {
     final t = map['thumbnails'];
+    final t2 = map['tags'] ?? '';
+
     return Wallpaper(
       id: map['id'] as String,
       wallpaperType: WallpaperType.values[map['wallpaperType'] as int],
@@ -75,8 +97,12 @@ class Wallpaper {
       description: map['description'] as String,
       author: map['author'] as String,
       thumbnails: t is String
-          ? (json.decode(map['thumbnails'] as String) as List<dynamic>).cast<String>()
+          ? (json.decode(map['thumbnails'] as String) as List<dynamic>)
+              .cast<String>()
           : (t as List<dynamic>).cast<String>(),
+      tags: t2 is String
+          ? (json.decode(map['tags'] as String) as List<dynamic>).cast<String>()
+          : (t2 as List<dynamic>).cast<String>(),
       versionCode: map['versionCode'] as int,
       versionName: map['versionName'] as String,
       mainFilepath: map['path'] as String,
@@ -91,6 +117,7 @@ class Wallpaper {
       'description': description,
       'author': author,
       'thumbnails': json.encode(thumbnails),
+      'tags': json.encode(tags),
       'versionCode': versionCode,
       'versionName': versionName,
       'path': mainFilepath,
@@ -105,6 +132,10 @@ class Wallpaper {
   ///   "description": "description",
   ///   "author": "author",
   ///   "thumbnails": [
+  ///     "asd",
+  ///     "asdasd"
+  ///   ],
+  ///   "tags": [
   ///     "asd",
   ///     "asdasd"
   ///   ],
@@ -128,6 +159,7 @@ class Wallpaper {
     final String description,
     final String author,
     final List<String> thumbnails,
+    final List<String> tags,
     final int versionCode,
     final String versionName,
     final String path,
@@ -139,6 +171,7 @@ class Wallpaper {
       description: description ?? this.description,
       author: author ?? this.author,
       thumbnails: thumbnails ?? this.thumbnails,
+      tags: tags ?? this.tags,
       versionCode: versionCode ?? this.versionCode,
       versionName: versionName ?? this.versionName,
       mainFilepath: path ?? this.mainFilepath,
@@ -147,7 +180,7 @@ class Wallpaper {
 
   @override
   String toString() {
-    return 'Wallpaper{id: $id, wallpaperType: $wallpaperType, name: $name, description: $description, author: $author, thumbnails: $thumbnails, versionCode: $versionCode, versionName: $versionName, path: $mainFilepath}';
+    return 'Wallpaper{id: $id, wallpaperType: $wallpaperType, name: $name, description: $description, author: $author, thumbnails: $thumbnails, tags: $tags, versionCode: $versionCode, versionName: $versionName, mainFilepath: $mainFilepath}';
   }
 
   @override
