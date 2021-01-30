@@ -14,7 +14,7 @@
   </p>
 </p>
 
-[![Library][library-screenshot]](/screenshots/tpp.png)
+<img src="https://raw.githubusercontent.com/AugustToko/project_lw/master/screenshots/tpp.png">
 
 ## ✨ 特性
 
