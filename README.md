@@ -1,7 +1,20 @@
-# project_lw
+<br />
+<p align="center">
+  <a href="https://music.qier222.com" target="blank">
+    <img src="https://flutter.dev/images/flutter-mono-81x100.png" alt="Logo" width="156" height="156">
+  </a>
+  <h2 align="center" style="font-weight: 600">project_lw</h2>
 
+  <p align="center">
+    Android 端强大的动态壁纸管理器
+    <br />
+    <a href="https://music.qier222.com" target="blank"><strong>🌎 访问DEMO</strong></a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="#%EF%B8%8F-安装" target="blank"><strong>📦️ 下载安装包</strong></a>
+    <br />
+    <br />
+  </p>
+</p>
 
-## 动态壁纸管理器
 
 ## ✨ 特性
 
