@@ -1,7 +1,7 @@
 <br />
 <p align="center">
   <a href="https://music.qier222.com" target="blank">
-    <img src="https://flutter.dev/images/flutter-mono-81x100.png" alt="Logo" width="156" height="156">
+    <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=128476812,2256985719&fm=26&gp=0.jpg" alt="Logo" width="156" height="156">
   </a>
   <h2 align="center" style="font-weight: 600">project_lw</h2>
 
