@@ -17,15 +17,13 @@
 <img src="https://raw.githubusercontent.com/AugustToko/project_lw/master/screenshots/tpp.png">
 
 ## ✨ 特性
-
 - ✅ 使用 Flutter 开发
 - 🌎️ 支持 HTML 、URL 作为 Android 壁纸
 - 📺 支持视频作为 Android 壁纸
 - 🛠 更多特性开发中
 
 
-## ☑️ Todo
-
+## ☑️ TODO
 - [ ] 社区功能
 - [ ] 应用设置功能
 - [ ] 应用性能优化
