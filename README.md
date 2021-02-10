@@ -36,7 +36,7 @@
 
 
 ## 🚧目前支持
-- HTML  
+- HTML (webview)  
 - Video  
 - View  
 - Image  
