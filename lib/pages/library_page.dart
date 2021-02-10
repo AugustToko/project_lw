@@ -62,6 +62,8 @@ class _LibraryPageState extends State<LibraryPage> {
                                 width: 300,
                                 child: TextField(
                                   controller: ctl,
+                                  decoration:
+                                      InputDecoration(hintText: '请输入 URL'),
                                 ),
                               ),
                               actions: [
@@ -96,7 +98,6 @@ class _LibraryPageState extends State<LibraryPage> {
                         Navigator.pop(context);
                       },
                     ),
-                    Divider(),
                     ListTile(
                       onTap: () async {
                         final result = await FilePicker.platform.pickFiles(

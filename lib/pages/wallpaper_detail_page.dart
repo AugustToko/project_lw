@@ -275,8 +275,19 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                         alignment: MainAxisAlignment.end,
                         children: [
                           FlatButton.icon(
-                            onPressed: () {
-                              WallpaperTools.instance.shareWallpaper(wallpaper);
+                            onPressed: () async {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text('请稍后'),
+                                    );
+                                  },
+                                  barrierDismissible: false);
+                              await WallpaperTools.instance
+                                  .shareWallpaper(wallpaper);
+
+                              Navigator.pop(context);
                             },
                             icon: Icon(Icons.ios_share),
                             label: Text('分享'),
