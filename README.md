@@ -8,7 +8,7 @@
   <p align="center">
     Android 端强大的动态壁纸管理器
     <br />
-    <a href="https://github.com/AugustToko/project_lw/suites/1910039621/artifacts/37523581" target="blank"><strong>📦️ 下载安装包</strong></a>
+    <a href="https://github.com/AugustToko/project_lw/releases/tag/1.0.0%2B2" target="blank"><strong>📦️ 下载安装包</strong></a>
     <br />
     <br />
   </p>
