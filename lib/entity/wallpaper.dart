@@ -26,7 +26,6 @@ extension WallpaperTypeExt on WallpaperType {
       case WallpaperType.IMAGE:
         return '图像';
     }
-    return null;
   }
 }
 
@@ -51,8 +50,8 @@ class Wallpaper {
   final String name;
   final String description;
   final String author;
-  final List<String> thumbnails;
-  final List<String> tags;
+  final List<String>? thumbnails;
+  final List<String>? tags;
   final int versionCode;
   final String versionName;
 
@@ -74,21 +73,21 @@ class Wallpaper {
       this.mainFilepath);
 
   const Wallpaper({
-    this.id,
-    this.wallpaperType,
-    this.name,
-    this.description,
+    required this.id,
+    required this.wallpaperType,
+    required this.name,
+    required this.description,
     this.tags,
-    this.author,
+    required this.author,
     this.thumbnails,
-    this.versionCode,
-    this.versionName,
-    this.mainFilepath,
+    required this.versionCode,
+    required this.versionName,
+    required this.mainFilepath,
   });
 
   factory Wallpaper.fromMap(Map<String, dynamic> map) {
     final t = map['thumbnails'];
-    final t2 = map['tags'] ?? '';
+    final t2 = map['tags'];
 
     return Wallpaper(
       id: map['id'] as String,
@@ -100,9 +99,9 @@ class Wallpaper {
           ? (json.decode(map['thumbnails'] as String) as List<dynamic>)
               .cast<String>()
           : (t as List<dynamic>).cast<String>(),
-      tags: t2 is String
-          ? (json.decode(map['tags'] as String) as List<dynamic>).cast<String>()
-          : (t2 as List<dynamic>).cast<String>(),
+      tags: map['tags'] != null
+          ? (json.decode(map['tags']) as List<dynamic>).cast<String>()
+          : [],
       versionCode: map['versionCode'] as int,
       versionName: map['versionName'] as String,
       mainFilepath: map['path'] as String,
@@ -153,16 +152,16 @@ class Wallpaper {
   }
 
   Wallpaper copyWith({
-    final String id,
-    final WallpaperType wallpaperType,
-    final String name,
-    final String description,
-    final String author,
-    final List<String> thumbnails,
-    final List<String> tags,
-    final int versionCode,
-    final String versionName,
-    final String path,
+    final String? id,
+    final WallpaperType? wallpaperType,
+    final String? name,
+    final String? description,
+    final String? author,
+    final List<String>? thumbnails,
+    final List<String>? tags,
+    final int? versionCode,
+    final String? versionName,
+    final String? path,
   }) {
     return Wallpaper(
       id: id ?? this.id,

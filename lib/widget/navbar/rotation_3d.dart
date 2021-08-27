@@ -24,8 +24,8 @@ class Rotation3d extends StatelessWidget {
   final double rotationZ;
 
   const Rotation3d(
-      {Key key,
-      @required this.child,
+      {Key? key,
+      required this.child,
       this.rotationX = 0,
       this.rotationY = 0,
       this.rotationZ = 0})

@@ -27,7 +27,7 @@ class DataCenter extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addWallpaper(final Wallpaper wallpaper) async {
+  Future<void> addWallpaper(final Wallpaper? wallpaper) async {
     if (wallpaper == null ||
         wallpaper.id == null ||
         wallpaper.id

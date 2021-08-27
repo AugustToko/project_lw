@@ -33,8 +33,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
 
       Map<Permission, PermissionStatus> statuses = await [
         Permission.storage,
@@ -72,7 +71,7 @@ class _SplashPageState extends State<SplashPage> {
         child: ValueListenableBuilder<String>(
           valueListenable: _valueNotifier,
           builder: (context, value, child) {
-            return Text(value ?? '正在加载...');
+            return Text(value);
           },
         ),
       ),

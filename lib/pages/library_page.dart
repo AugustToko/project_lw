@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:lingyun_widget/dialog_util.dart';
 import 'package:lingyun_widget/loading_dialog.dart';
+import 'package:lingyun_widget/toast.dart';
 import 'package:project_lw/entity/center/data_center.dart';
 import 'package:project_lw/entity/wallpaper.dart';
 import 'package:project_lw/pages/wallpaper_detail_page.dart';
@@ -37,8 +38,8 @@ class _LibraryPageState extends State<LibraryPage> {
                       onTap: () async {
                         final result = await FilePicker.platform.pickFiles();
 
-                        if (result == null) return;
-                        final file = File(result.files.single.path);
+                        if (result == null || result.files.single.path == null) return;
+                        final file = File(result.files.single.path!);
 
                         await WallpaperTools.instance
                             .importWallpaper(context, file);
@@ -91,6 +92,12 @@ class _LibraryPageState extends State<LibraryPage> {
 
                         DialogUtil.showBlurDialog(
                             context, (context) => LoadingDialog(text: '正在加载'));
+
+                        for (final file in result.files) {
+                          if (file.path == null) {
+                            showMyToast('file.path == null');
+                          }
+                        }
 
                         await WallpaperTools.instance.importImage(
                             context, result.files.map((e) => e.path).toList());
@@ -204,7 +211,7 @@ class _LibraryPageState extends State<LibraryPage> {
                                       height: 300,
                                     )
                                   : Image.file(
-                                      File(wallpaper.getMainThumbnailPath()),
+                                      File(wallpaper.getMainThumbnailPath()!),
                                       height: 300,
                                       fit: BoxFit.cover,
                                     ),

@@ -21,7 +21,7 @@ class WallpaperTools {
   WallpaperTools._();
 
   /// 指壁纸存储位置
-  Directory wallpaperPlaceDir;
+  late Directory wallpaperPlaceDir;
 
   Future<void> init() async {
     wallpaperPlaceDir = await getApplicationSupportDirectory();
@@ -54,14 +54,14 @@ class WallpaperTools {
       final wallpaper = WallpaperFileUtil.parseWallpaperPack(dest);
 
       await DataCenter.get(context)
-          .addWallpaper(wallpaper.copyWith(id: wallpaperId));
+          .addWallpaper(wallpaper?.copyWith(id: wallpaperId));
     }
   }
 
   /// 导入壁纸包
   /// [wallpaperPack] 壁纸包文件
   Future<void> importWallpaper(
-      final BuildContext context, final File wallpaperPack) async {
+      final BuildContext context, final File? wallpaperPack) async {
     if (wallpaperPack == null || !wallpaperPack.existsSync()) return;
 
     final tempDir = Directory(
@@ -152,15 +152,16 @@ class WallpaperTools {
     DataCenter.get(context).removeWallpaper(wallpaper);
   }
 
-  Future<void> importVideo(BuildContext context, List<String> files) async {
+  Future<void> importVideo(BuildContext context, List<String?>? files) async {
     if (files == null || files.isEmpty) return;
 
     final target = <String>[];
 
-    files.forEach((element) {
+    for (final element in files) {
+      if (element == null) continue;
       if (element.endsWith(WallpaperFileUtil.SUPPORTED_VIDEO_FORMAT))
         target.add(element);
-    });
+    }
 
     final FlutterFFmpeg _flutterFFmpeg = FlutterFFmpeg();
 
@@ -247,15 +248,16 @@ class WallpaperTools {
     }
   }
 
-  Future<void> importImage(BuildContext context, List<String> files) async {
+  Future<void> importImage(BuildContext context, List<String?>? files) async {
     if (files == null || files.isEmpty) return;
 
     final target = <String>[];
 
-    files.forEach((element) {
+    for (final element in files) {
+      if (element == null) continue;
       if (element.endsWith('.png') || element.endsWith('.jpg'))
         target.add(element);
-    });
+    }
 
     await for (final itemPath in Stream.fromIterable(target)) {
       print('importImageFromDir: $itemPath');
@@ -392,18 +394,17 @@ class WallpaperTools {
 }
 
 extension WallpaperExt on Wallpaper {
-  String getMainThumbnailPath() {
-    if (thumbnails.isEmpty) return null;
+  String? getMainThumbnailPath() {
+    if (thumbnails == null || thumbnails!.isEmpty) return null;
     return WallpaperTools.instance.wallpaperPlaceDir.path +
         Platform.pathSeparator +
         id +
         Platform.pathSeparator +
-        thumbnails.first;
+        thumbnails!.first;
   }
 
-  List<String> getAllThumbnailPath() {
-    return thumbnails
-        .map((e) =>
+  List<String>? getAllThumbnailPath() {
+    return thumbnails?.map((e) =>
             WallpaperTools.instance.wallpaperPlaceDir.path +
             Platform.pathSeparator +
             id +
@@ -418,17 +419,19 @@ extension WallpaperExt on Wallpaper {
       id;
 
   Future<WallpaperExtInfo> extInfo() async {
-    List<String> getAllFilePath(Directory directory) {
+    List<String> getAllFilePath(Directory? directory) {
       if (directory == null) return [];
       final data = <String>[];
-      directory.listSync().forEach((element) {
+
+      for (final element in directory.listSync()) {
         final temp = Directory(element.path);
         if (temp.existsSync()) {
           return getAllFilePath(temp);
         } else {
           data.add(element.path);
         }
-      });
+      }
+
       return data;
     }
 

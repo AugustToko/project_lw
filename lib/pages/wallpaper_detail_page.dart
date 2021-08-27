@@ -71,12 +71,12 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                   return Hero(
                       tag: 'image_${widget.wallpaper.id}',
                       child: Image.file(
-                        File(wallpaper.getAllThumbnailPath()[index]),
+                        File(wallpaper.getAllThumbnailPath()![index]),
                         // height: h,
                         fit: BoxFit.cover,
                       ));
                 },
-                itemCount: wallpaper.thumbnails.length,
+                itemCount: wallpaper.thumbnails?.length ?? 0,
               ),
             ),
             Positioned.fill(
@@ -162,7 +162,7 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                ...List.generate(wallpaper.thumbnails.length,
+                                ...List.generate(wallpaper.thumbnails?.length ?? 0,
                                     (index) {
                                   return Container(
                                     clipBehavior: Clip.antiAlias,
@@ -175,7 +175,7 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                                         vertical: 16, horizontal: 16),
                                     child: Image.file(
                                       File(wallpaper
-                                          .getAllThumbnailPath()[index]),
+                                          .getAllThumbnailPath()![index]),
                                       fit: BoxFit.cover,
                                     ),
                                   );
@@ -203,6 +203,8 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                                 return CircularProgressIndicator();
 
                               final data = snapshot.data;
+                              if (data == null)
+                                return Text('NULL');
 
                               return Column(
                                 children: [

@@ -1,10 +1,3 @@
-/*
- * Project: tools_pack Public
- * Module: toolspack
- * Last Modified: 21-1-16 下午12:40
- * Copyright (c) 2021 August https://blog.geek-cloud.top/
- */
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferenceUtil {
@@ -13,7 +6,7 @@ class SharedPreferenceUtil {
     return await prefs.setBool(key, value);
   }
 
-  static Future<bool> getBool(String key) async {
+  static Future<bool?> getBool(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getBool(key);
   }
@@ -23,7 +16,7 @@ class SharedPreferenceUtil {
     return await prefs.setString(key, value);
   }
 
-  static Future<String> getString(String key) async {
+  static Future<String?> getString(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(key);
   }
@@ -33,7 +26,7 @@ class SharedPreferenceUtil {
     return await prefs.setDouble(key, value);
   }
 
-  static Future<double> getDouble(String key) async {
+  static Future<double?> getDouble(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getDouble(key);
   }
@@ -43,7 +36,7 @@ class SharedPreferenceUtil {
     return await prefs.setInt(key, value);
   }
 
-  static Future<int> getInt(String key) async {
+  static Future<int?> getInt(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getInt(key);
   }
@@ -53,7 +46,7 @@ class SharedPreferenceUtil {
     return await prefs.setStringList(key, value);
   }
 
-  static Future<List<String>> getStringList(String key) async {
+  static Future<List<String>?> getStringList(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getStringList(key);
   }

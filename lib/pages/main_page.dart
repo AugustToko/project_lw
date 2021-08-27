@@ -56,21 +56,19 @@ class _IndexState extends State<MainPage>
 
   var exitApp = false;
 
-  AnimationController mainAnimationCtl;
+  late AnimationController mainAnimationCtl = AnimationController(
+      duration: const Duration(milliseconds: 450), vsync: this);
 
   @override
   void initState() {
-    WidgetsBinding.instance.addObserver(this); // 注册监听器
-
-    mainAnimationCtl = AnimationController(
-        duration: const Duration(milliseconds: 450), vsync: this);
+    WidgetsBinding.instance!.addObserver(this); // 注册监听器
 
     super.initState();
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance!.removeObserver(this);
     super.dispose();
   }
 
@@ -85,8 +83,8 @@ class _IndexState extends State<MainPage>
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (FocusManager.instance.primaryFocus.hasFocus) {
-          FocusManager.instance.primaryFocus.unfocus();
+        if (FocusManager.instance.primaryFocus?.hasFocus ?? false) {
+          FocusManager.instance.primaryFocus?.unfocus();
           return false;
         }
 
@@ -97,7 +95,7 @@ class _IndexState extends State<MainPage>
         value: LWThemeUtil.getSystemStyle(context),
         child: GestureDetector(
           onTap: () {
-            FocusManager.instance.primaryFocus.unfocus();
+            FocusManager.instance.primaryFocus?.unfocus();
           },
           child: Scaffold(
             body: Stack(

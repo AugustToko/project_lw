@@ -13,7 +13,7 @@ Future<void> main() async {
 
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  if (kReleaseMode) GestureBinding.instance.resamplingEnabled = true;
+  if (kReleaseMode) GestureBinding.instance?.resamplingEnabled = true;
 
   runApp(MultiProvider(
     providers: [

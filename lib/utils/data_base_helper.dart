@@ -6,7 +6,7 @@ class DataBaseHelper {
 
   DataBaseHelper._();
 
-  Database db;
+  late Database db;
 
   Future<void> init() async {
     db = await openDatabase('database.db', version: 1,

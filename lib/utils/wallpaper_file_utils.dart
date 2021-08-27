@@ -55,7 +55,7 @@ class WallpaperFileUtil {
     }
   }
 
-  static Wallpaper parseWallpaperPack(final Directory directory) {
+  static Wallpaper? parseWallpaperPack(final Directory directory) {
     if (!directory.existsSync()) return null;
 
     final jsonFile = File(
@@ -78,8 +78,8 @@ class WallpaperFileUtil {
 
     final fileList = wallpaperSource.listSync(recursive: true);
 
-    final tempDir =
-        Directory(wallpaperSource.path + Platform.pathSeparator + TEMP_FOLDER_NAME);
+    final tempDir = Directory(
+        wallpaperSource.path + Platform.pathSeparator + TEMP_FOLDER_NAME);
     tempDir.createSync();
 
     await for (final element in Stream.fromIterable(fileList)) {
@@ -118,7 +118,7 @@ class WallpaperFileUtil {
     return pak;
   }
 
-  static bool checkWallpaperConfigFile(File file) {
+  static bool checkWallpaperConfigFile(File? file) {
     if (file == null) return false;
     if (!file.existsSync()) return false;
     if (!file.path.contains(WALLPAPER_INFO_FILE_NAME)) return false;
@@ -133,11 +133,9 @@ class WallpaperFileUtil {
       return false;
     }
 
-    if (wallpaper == null) return false;
-
-    wallpaper.toMap().forEach((key, value) {
+    for (final value in wallpaper.toMap().values) {
       if (value == null) return false;
-    });
+    }
 
     if (wallpaper.id.trim().isEmpty) return false;
     if (wallpaper.mainFilepath.trim().isEmpty) return false;

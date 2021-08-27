@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class SheetUtils {
-  static Future<T> showSheetNoAPNoBlurCommon<T>(
-      BuildContext context,
-      final Widget child, {
-        bool cancelable = true,
-      }) {
-    return showModalBottomSheet(
+  static Future<T?> showSheetNoAPNoBlurCommon<T>(
+    BuildContext context,
+    final Widget child, {
+    bool cancelable = true,
+  }) {
+    return showModalBottomSheet<T>(
         context: context,
         isDismissible: cancelable,
         isScrollControlled: true,

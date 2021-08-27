@@ -26,7 +26,7 @@ class LWThemeUtil {
   }
 
   static TextStyle pageTitleStyle(BuildContext context) =>
-      Theme.of(context).textTheme.headline4.copyWith(
+      Theme.of(context).textTheme.headline4!.copyWith(
           color: Theme.of(context).brightness == Brightness.light
               ? Color.fromARGB(255, 49, 55, 63)
               : Colors.white,
