@@ -28,8 +28,8 @@ const DEFAULT_HTML_WALLPAPER_LIST = <Wallpaper>[
 
 const PRESET_WALLPAPER_PATH = [
   'assets/demo1.lwpak',
-  // 'assets/demo2.lwpak',
-  // 'assets/demo3.lwpak',
-  // 'assets/demo4.lwpak',
-  // 'assets/demo5.lwpak',
+  'assets/demo2.lwpak',
+  'assets/demo3.lwpak',
+  'assets/demo4.lwpak',
+  'assets/demo5.lwpak',
 ];

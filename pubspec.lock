@@ -212,16 +212,20 @@ packages:
   line_awesome_icons:
     dependency: "direct main"
     description:
-      path: "../line_awesome_icons_flutter"
-      relative: true
-    source: path
+      path: "."
+      ref: master
+      resolved-ref: dbb51f56bede9ed91300e814ac4b5777011b6e3d
+      url: "https://github.com/AugustToko/line_awesome_icons_flutter.git"
+    source: git
     version: "1.0.4+2"
   lingyun_widget:
     dependency: "direct main"
     description:
-      path: "../lingyun_widget"
-      relative: true
-    source: path
+      path: "."
+      ref: master
+      resolved-ref: "283019d4ee17a52d0c8fdb0a3cb7d6e61d108735"
+      url: "https://github.com/AugustToko/lingyun_widget.git"
+    source: git
     version: "0.0.3"
   marquee_text:
     dependency: "direct main"
