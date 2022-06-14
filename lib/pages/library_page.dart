@@ -1,12 +1,12 @@
 import 'dart:io';
 
+import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:lingyun_widget/dialog_util.dart';
 import 'package:lingyun_widget/loading_dialog.dart';
-import 'package:lingyun_widget/toast.dart';
 import 'package:project_lw/entity/center/data_center.dart';
 import 'package:project_lw/entity/wallpaper.dart';
 import 'package:project_lw/pages/wallpaper_detail_page.dart';
@@ -41,8 +41,7 @@ class _LibraryPageState extends State<LibraryPage> {
                         if (result == null || result.files.single.path == null) return;
                         final file = File(result.files.single.path!);
 
-                        await WallpaperTools.instance
-                            .importWallpaper(context, file);
+                        await WallpaperTools.instance.importWallpaper(context, file);
                       },
                       leading: const Icon(Icons.move_to_inbox_rounded),
                       title: const Text('导入文件'),
@@ -63,15 +62,13 @@ class _LibraryPageState extends State<LibraryPage> {
                                 width: 300,
                                 child: TextField(
                                   controller: ctl,
-                                  decoration:
-                                      InputDecoration(hintText: '请输入 URL'),
+                                  decoration: InputDecoration(hintText: '请输入 URL'),
                                 ),
                               ),
                               actions: [
                                 FlatButton(
                                     onPressed: () async {
-                                      await WallpaperTools.instance
-                                          .importUrl(context, ctl.text);
+                                      await WallpaperTools.instance.importUrl(context, ctl.text);
                                     },
                                     child: Text('添加'))
                               ],
@@ -85,38 +82,32 @@ class _LibraryPageState extends State<LibraryPage> {
                       leading: Icon(Icons.image),
                       subtitle: Text('导入静态图片作为壁纸'),
                       onTap: () async {
-                        final result = await FilePicker.platform.pickFiles(
-                            type: FileType.image, allowMultiple: true);
+                        final result = await FilePicker.platform.pickFiles(type: FileType.image, allowMultiple: true);
 
                         if (result == null) return;
 
-                        DialogUtil.showBlurDialog(
-                            context, (context) => LoadingDialog(text: '正在加载'));
+                        DialogUtil.showBlurDialog(context, (context) => LoadingDialog(text: '正在加载'));
 
                         for (final file in result.files) {
                           if (file.path == null) {
-                            showMyToast('file.path == null');
+                            FlushbarHelper.createError(message: 'file.path == null').show(context);
                           }
                         }
 
-                        await WallpaperTools.instance.importImage(
-                            context, result.files.map((e) => e.path).toList());
+                        await WallpaperTools.instance.importImage(context, result.files.map((e) => e.path).toList());
 
                         Navigator.pop(context);
                       },
                     ),
                     ListTile(
                       onTap: () async {
-                        final result = await FilePicker.platform.pickFiles(
-                            type: FileType.video, allowMultiple: true);
+                        final result = await FilePicker.platform.pickFiles(type: FileType.video, allowMultiple: true);
 
                         if (result == null) return;
 
-                        DialogUtil.showBlurDialog(
-                            context, (context) => LoadingDialog(text: '正在加载'));
+                        DialogUtil.showBlurDialog(context, (context) => LoadingDialog(text: '正在加载'));
 
-                        await WallpaperTools.instance.importVideo(
-                            context, result.files.map((e) => e.path).toList());
+                        await WallpaperTools.instance.importVideo(context, result.files.map((e) => e.path).toList());
                         Navigator.pop(context);
                       },
                       title: const Text('导入视频'),
@@ -143,8 +134,7 @@ class _LibraryPageState extends State<LibraryPage> {
           slivers: [
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.only(
-                    top: LWThemeUtil.pageTitleTopPadding, bottom: 24),
+                padding: const EdgeInsets.only(top: LWThemeUtil.pageTitleTopPadding, bottom: 24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -166,14 +156,13 @@ class _LibraryPageState extends State<LibraryPage> {
             ),
             Selector<DataCenter, List<Wallpaper>>(
               builder: (_, val, child) {
-                return SliverStaggeredGrid.countBuilder(
+                return MasonryGridView.count(
                   crossAxisCount: 2,
                   mainAxisSpacing: 8.0,
                   crossAxisSpacing: 8.0,
                   itemCount: val.length,
                   itemBuilder: (context, index) {
                     final wallpaper = val[index];
-
                     return CupertinoContextMenu(
                       actions: [
                         const CupertinoContextMenuAction(
@@ -189,8 +178,7 @@ class _LibraryPageState extends State<LibraryPage> {
                           child: Text('删除'),
                           trailingIcon: Icons.delete,
                           onPressed: () {
-                            WallpaperTools.instance
-                                .removeWallpaper(context, wallpaper);
+                            WallpaperTools.instance.removeWallpaper(context, wallpaper);
                             Navigator.pop(context);
                           },
                         )
@@ -233,24 +221,16 @@ class _LibraryPageState extends State<LibraryPage> {
                                       clipBehavior: Clip.antiAlias,
                                       decoration: BoxDecoration(
                                           color: Colors.white.withOpacity(0.8),
-                                          borderRadius:
-                                              const BorderRadius.vertical(
-                                                  bottom: Radius.circular(16))),
+                                          borderRadius: const BorderRadius.vertical(bottom: Radius.circular(16))),
                                       padding: const EdgeInsets.all(12),
                                       child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text('${wallpaper.mainFilepath}',
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 2),
+                                          Text('${wallpaper.mainFilepath}', overflow: TextOverflow.ellipsis, maxLines: 2),
                                           Text(
                                             '${wallpaper.wallpaperType}',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .caption,
+                                            style: Theme.of(context).textTheme.caption,
                                           ),
                                         ],
                                       ),
@@ -275,7 +255,6 @@ class _LibraryPageState extends State<LibraryPage> {
                       ),
                     );
                   },
-                  staggeredTileBuilder: (index) => StaggeredTile.fit(1),
                 );
               },
               selector: (_, foo) => foo.wallpapers,

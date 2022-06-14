@@ -34,7 +34,6 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
-
       Map<Permission, PermissionStatus> statuses = await [
         Permission.storage,
         Permission.camera,
@@ -46,8 +45,7 @@ class _SplashPageState extends State<SplashPage> {
       await DataCenter.get(context).init();
 
       _valueNotifier.value = '正在获取配置文件';
-      final isFirst =
-          (await SharedPreferenceUtil.getBool(SpfKeys.FIRST)) ?? true;
+      final isFirst = (await SharedPreferenceUtil.getBool(SpfKeys.FIRST)) ?? true;
 
       await WallpaperTools.instance.init();
 

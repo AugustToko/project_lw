@@ -38,14 +38,9 @@ class WallpaperTools {
 
       final data = await rootBundle.load(path);
 
-      final tempPakFile = File(dir.path +
-          Platform.pathSeparator +
-          wallpaperId +
-          '.' +
-          WallpaperFileUtil.SUPPORTED_WALLPAPER_FORMAT);
+      final tempPakFile = File(dir.path + Platform.pathSeparator + wallpaperId + '.' + WallpaperFileUtil.SUPPORTED_WALLPAPER_FORMAT);
 
-      await tempPakFile.writeAsBytes(
-          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
+      await tempPakFile.writeAsBytes(data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
 
       await WallpaperFileUtil.unpackWallpaper(tempPakFile, dest);
 
@@ -53,21 +48,17 @@ class WallpaperTools {
 
       final wallpaper = WallpaperFileUtil.parseWallpaperPack(dest);
 
-      await DataCenter.get(context)
-          .addWallpaper(wallpaper?.copyWith(id: wallpaperId));
+      await DataCenter.get(context).addWallpaper(wallpaper?.copyWith(id: wallpaperId));
     }
   }
 
   /// 导入壁纸包
   /// [wallpaperPack] 壁纸包文件
-  Future<void> importWallpaper(
-      final BuildContext context, final File? wallpaperPack) async {
+  Future<void> importWallpaper(final BuildContext context, final File? wallpaperPack) async {
     if (wallpaperPack == null || !wallpaperPack.existsSync()) return;
 
     final tempDir = Directory(
-      wallpaperPlaceDir.path +
-          Platform.pathSeparator +
-          'temp-${DateTime.now().millisecondsSinceEpoch}',
+      wallpaperPlaceDir.path + Platform.pathSeparator + 'temp-${DateTime.now().millisecondsSinceEpoch}',
     );
 
     tempDir.createSync();
@@ -78,25 +69,20 @@ class WallpaperTools {
 
     await WallpaperFileUtil.unpackWallpaper(wallpaperPack, tempDir);
 
-    final config = File(tempDir.path +
-        Platform.pathSeparator +
-        WallpaperFileUtil.WALLPAPER_INFO_FILE_NAME);
+    final config = File(tempDir.path + Platform.pathSeparator + WallpaperFileUtil.WALLPAPER_INFO_FILE_NAME);
     if (!config.existsSync()) {
       await clean();
       return;
     }
 
-    final wallpaper = Wallpaper.fromJson(
-        json.decode(config.readAsStringSync()) as Map<String, dynamic>);
+    final wallpaper = Wallpaper.fromJson(json.decode(config.readAsStringSync()) as Map<String, dynamic>);
 
-    if (wallpaper == null &&
-        !WallpaperFileUtil.checkWallpaperConfigFile(config)) {
+    if (wallpaper == null && !WallpaperFileUtil.checkWallpaperConfigFile(config)) {
       await clean();
       return;
     }
 
-    final newDir = Directory(
-        wallpaperPlaceDir.path + Platform.pathSeparator + wallpaper.id);
+    final newDir = Directory(wallpaperPlaceDir.path + Platform.pathSeparator + wallpaper.id);
     if (newDir.existsSync()) {
       await clean();
       return;
@@ -104,11 +90,8 @@ class WallpaperTools {
 
     newDir.createSync();
 
-    await for (final element
-        in Stream.fromIterable(tempDir.listSync(recursive: true))) {
-      await element.rename(newDir.path +
-          Platform.pathSeparator +
-          FileUtils.basename(element.path));
+    await for (final element in Stream.fromIterable(tempDir.listSync(recursive: true))) {
+      await element.rename(newDir.path + Platform.pathSeparator + FileUtils.basename(element.path));
     }
 
     print('------new-------');
@@ -129,9 +112,7 @@ class WallpaperTools {
     print(pak.path);
     print(pak.existsSync());
 
-    final newPath = (await getTemporaryDirectory()).path +
-        Platform.pathSeparator +
-        FileUtils.basename(pak.path);
+    final newPath = (await getTemporaryDirectory()).path + Platform.pathSeparator + FileUtils.basename(pak.path);
 
     pak.renameSync(newPath);
 
@@ -140,8 +121,7 @@ class WallpaperTools {
     print(File(newPath));
 
     if (pak != null && pak.existsSync()) {
-      Share.shareFiles([newPath],
-          text: '${wallpaper.name}\n${wallpaper.description}');
+      Share.shareFiles([newPath], text: '${wallpaper.name}\n${wallpaper.description}');
     }
   }
 
@@ -159,8 +139,7 @@ class WallpaperTools {
 
     for (final element in files) {
       if (element == null) continue;
-      if (element.endsWith(WallpaperFileUtil.SUPPORTED_VIDEO_FORMAT))
-        target.add(element);
+      if (element.endsWith(WallpaperFileUtil.SUPPORTED_VIDEO_FORMAT)) target.add(element);
     }
 
     final FlutterFFmpeg _flutterFFmpeg = FlutterFFmpeg();
@@ -171,9 +150,7 @@ class WallpaperTools {
 
       final id = uuid.v1();
 
-      final tempName = item.parent.path +
-          Platform.pathSeparator +
-          '${DateTime.now().millisecondsSinceEpoch}.png';
+      final tempName = item.parent.path + Platform.pathSeparator + '${DateTime.now().millisecondsSinceEpoch}.png';
 
       final result = await _flutterFFmpeg.executeWithArguments([
         // '-ss',
@@ -209,23 +186,17 @@ class WallpaperTools {
           versionName: '1.0',
           wallpaperType: WallpaperType.VIDEO);
 
-      final targetDir = Directory(
-          WallpaperTools.instance.wallpaperPlaceDir.path +
-              Platform.pathSeparator +
-              wallpaperConfig.id);
+      final targetDir = Directory(WallpaperTools.instance.wallpaperPlaceDir.path + Platform.pathSeparator + wallpaperConfig.id);
 
       targetDir.createSync();
 
-      final configFile = File(targetDir.path +
-          Platform.pathSeparator +
-          WallpaperFileUtil.WALLPAPER_INFO_FILE_NAME);
+      final configFile = File(targetDir.path + Platform.pathSeparator + WallpaperFileUtil.WALLPAPER_INFO_FILE_NAME);
 
       configFile.writeAsStringSync(json.encode(wallpaperConfig));
 
       final thumbnailFile = File(tempName);
 
-      await thumbnailFile
-          .copy(targetDir.path + Platform.pathSeparator + 'thumbnail1.png');
+      await thumbnailFile.copy(targetDir.path + Platform.pathSeparator + 'thumbnail1.png');
 
       try {
         await thumbnailFile.delete();
@@ -240,9 +211,7 @@ class WallpaperTools {
 
       final videoFile = File(videoPath);
 
-      await videoFile.copy(targetDir.path +
-          Platform.pathSeparator +
-          FileUtils.basename(videoFile.path));
+      await videoFile.copy(targetDir.path + Platform.pathSeparator + FileUtils.basename(videoFile.path));
 
       await DataCenter.get(context).addWallpaper(wallpaperConfig);
     }
@@ -255,8 +224,7 @@ class WallpaperTools {
 
     for (final element in files) {
       if (element == null) continue;
-      if (element.endsWith('.png') || element.endsWith('.jpg'))
-        target.add(element);
+      if (element.endsWith('.png') || element.endsWith('.jpg')) target.add(element);
     }
 
     await for (final itemPath in Stream.fromIterable(target)) {
@@ -279,22 +247,14 @@ class WallpaperTools {
       );
 
       final targetDir = Directory(
-        WallpaperTools.instance.wallpaperPlaceDir.path +
-            Platform.pathSeparator +
-            wallpaperConfig.id,
+        WallpaperTools.instance.wallpaperPlaceDir.path + Platform.pathSeparator + wallpaperConfig.id,
       );
 
       targetDir.createSync();
 
-      item.copySync(wallpaperPlaceDir.path +
-          Platform.pathSeparator +
-          '$id' +
-          Platform.pathSeparator +
-          fileName);
+      item.copySync(wallpaperPlaceDir.path + Platform.pathSeparator + '$id' + Platform.pathSeparator + fileName);
 
-      final configFile = File(targetDir.path +
-          Platform.pathSeparator +
-          WallpaperFileUtil.WALLPAPER_INFO_FILE_NAME);
+      final configFile = File(targetDir.path + Platform.pathSeparator + WallpaperFileUtil.WALLPAPER_INFO_FILE_NAME);
 
       configFile.writeAsStringSync(json.encode(wallpaperConfig));
 
@@ -309,29 +269,24 @@ class WallpaperTools {
     final id = uuid.v1();
 
     final wallpaperConfig = Wallpaper(
-      id: id,
-      name: url,
-      author: 'Unknown',
-      description: 'None',
-      mainFilepath: url,
-      thumbnails: [],
-      versionCode: 1,
-      versionName: '1.0',
-      wallpaperType: WallpaperType.HTML,
-      tags: []
-    );
+        id: id,
+        name: url,
+        author: 'Unknown',
+        description: 'None',
+        mainFilepath: url,
+        thumbnails: [],
+        versionCode: 1,
+        versionName: '1.0',
+        wallpaperType: WallpaperType.HTML,
+        tags: []);
 
     final targetDir = Directory(
-      WallpaperTools.instance.wallpaperPlaceDir.path +
-          Platform.pathSeparator +
-          wallpaperConfig.id,
+      WallpaperTools.instance.wallpaperPlaceDir.path + Platform.pathSeparator + wallpaperConfig.id,
     );
 
     targetDir.createSync();
 
-    final configFile = File(targetDir.path +
-        Platform.pathSeparator +
-        WallpaperFileUtil.WALLPAPER_INFO_FILE_NAME);
+    final configFile = File(targetDir.path + Platform.pathSeparator + WallpaperFileUtil.WALLPAPER_INFO_FILE_NAME);
 
     configFile.writeAsStringSync(json.encode(wallpaperConfig));
 
@@ -396,27 +351,14 @@ class WallpaperTools {
 extension WallpaperExt on Wallpaper {
   String? getMainThumbnailPath() {
     if (thumbnails == null || thumbnails!.isEmpty) return null;
-    return WallpaperTools.instance.wallpaperPlaceDir.path +
-        Platform.pathSeparator +
-        id +
-        Platform.pathSeparator +
-        thumbnails!.first;
+    return WallpaperTools.instance.wallpaperPlaceDir.path + Platform.pathSeparator + id + Platform.pathSeparator + thumbnails!.first;
   }
 
   List<String>? getAllThumbnailPath() {
-    return thumbnails?.map((e) =>
-            WallpaperTools.instance.wallpaperPlaceDir.path +
-            Platform.pathSeparator +
-            id +
-            Platform.pathSeparator +
-            e)
-        .toList();
+    return thumbnails?.map((e) => WallpaperTools.instance.wallpaperPlaceDir.path + Platform.pathSeparator + id + Platform.pathSeparator + e).toList();
   }
 
-  String getDirPath() =>
-      WallpaperTools.instance.wallpaperPlaceDir.path +
-      Platform.pathSeparator +
-      id;
+  String getDirPath() => WallpaperTools.instance.wallpaperPlaceDir.path + Platform.pathSeparator + id;
 
   Future<WallpaperExtInfo> extInfo() async {
     List<String> getAllFilePath(Directory? directory) {
@@ -436,10 +378,7 @@ extension WallpaperExt on Wallpaper {
     }
 
     final dirPath = this.getDirPath();
-    final allPath = Directory(dirPath)
-        .listSync(recursive: true)
-        .map((e) => e.path)
-        .toList();
+    final allPath = Directory(dirPath).listSync(recursive: true).map((e) => e.path).toList();
 
     int len = 0;
 

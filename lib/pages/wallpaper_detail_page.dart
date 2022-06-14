@@ -57,8 +57,7 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
           child: Icon(Icons.check),
           elevation: 0,
           onPressed: () async {
-            await SharedPreferenceUtil.setString(
-                SpfKeys.LAST_WALLPAPER, json.encode(wallpaper));
+            await SharedPreferenceUtil.setString(SpfKeys.LAST_WALLPAPER, json.encode(wallpaper));
             NativeTool.setWallpaper(wallpaper);
           },
         ),
@@ -85,9 +84,7 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                   valueListenable: _valueNotifier,
                   builder: (context, value, child) {
                     return BackdropFilter(
-                      filter: ImageFilter.blur(
-                          sigmaY: (value / 20).clamp(0, 32.0).toDouble(),
-                          sigmaX: (value / 20).clamp(0, 32.0).toDouble()),
+                      filter: ImageFilter.blur(sigmaY: (value / 20).clamp(0, 32.0).toDouble(), sigmaX: (value / 20).clamp(0, 32.0).toDouble()),
                       child: Container(
                         color: Colors.white.withOpacity(0),
                       ),
@@ -162,8 +159,7 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                ...List.generate(wallpaper.thumbnails?.length ?? 0,
-                                    (index) {
+                                ...List.generate(wallpaper.thumbnails?.length ?? 0, (index) {
                                   return Container(
                                     clipBehavior: Clip.antiAlias,
                                     decoration: BoxDecoration(
@@ -171,11 +167,9 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                                     ),
                                     width: 200,
                                     height: 200,
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: 16, horizontal: 16),
+                                    margin: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                                     child: Image.file(
-                                      File(wallpaper
-                                          .getAllThumbnailPath()![index]),
+                                      File(wallpaper.getAllThumbnailPath()![index]),
                                       fit: BoxFit.cover,
                                     ),
                                   );
@@ -199,12 +193,10 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                           buildTitle('信息'),
                           FutureBuilder<WallpaperExtInfo>(
                             builder: (context, snapshot) {
-                              if (!snapshot.hasData)
-                                return CircularProgressIndicator();
+                              if (!snapshot.hasData) return CircularProgressIndicator();
 
                               final data = snapshot.data;
-                              if (data == null)
-                                return Text('NULL');
+                              if (data == null) return Text('NULL');
 
                               return Column(
                                 children: [
@@ -214,13 +206,11 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                                   ),
                                   ListTile(
                                     title: Text('壁纸类型'),
-                                    subtitle: Text(
-                                        '${wallpaper.wallpaperType.name()}'),
+                                    subtitle: Text('${wallpaper.wallpaperType.name()}'),
                                   ),
                                   ListTile(
                                     title: Text('版本信息'),
-                                    subtitle: Text(
-                                        '${wallpaper.versionCode} - ${wallpaper.versionName}'),
+                                    subtitle: Text('${wallpaper.versionCode} - ${wallpaper.versionName}'),
                                   ),
                                   ListTile(
                                     title: Text('路径'),
@@ -240,23 +230,17 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                                   ),
                                   ListTile(
                                     title: Text('大小'),
-                                    subtitle: Text(
-                                        '${(data.size / 1024 / 1024).round()} MB'),
+                                    subtitle: Text('${(data.size / 1024 / 1024).round()} MB'),
                                   ),
                                   ListTile(
                                     title: Text('验证信息'),
-                                    subtitle:
-                                        Text(data.verification ? '已验证' : '未验证'),
+                                    subtitle: Text(data.verification ? '已验证' : '未验证'),
                                     trailing: IconButton(
-                                      icon: data.verification
-                                          ? Icon(Icons.check_circle)
-                                          : Icon(Icons.error),
+                                      icon: data.verification ? Icon(Icons.check_circle) : Icon(Icons.error),
                                       onPressed: () {
                                         // ...
                                       },
-                                      color: data.verification
-                                          ? Colors.green
-                                          : Colors.orange,
+                                      color: data.verification ? Colors.green : Colors.orange,
                                     ),
                                   ),
                                 ],
@@ -286,8 +270,7 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                                     );
                                   },
                                   barrierDismissible: false);
-                              await WallpaperTools.instance
-                                  .shareWallpaper(wallpaper);
+                              await WallpaperTools.instance.shareWallpaper(wallpaper);
 
                               Navigator.pop(context);
                             },
@@ -297,8 +280,7 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                           ),
                           FlatButton.icon(
                             onPressed: () {
-                              WallpaperTools.instance
-                                  .removeWallpaper(context, wallpaper);
+                              WallpaperTools.instance.removeWallpaper(context, wallpaper);
                               Navigator.pop(context);
                             },
                             icon: Icon(Icons.delete),

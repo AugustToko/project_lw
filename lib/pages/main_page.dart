@@ -38,8 +38,7 @@ class MainPage extends StatefulWidget {
   }
 }
 
-class _IndexState extends State<MainPage>
-    with WidgetsBindingObserver, SingleTickerProviderStateMixin {
+class _IndexState extends State<MainPage> with WidgetsBindingObserver, SingleTickerProviderStateMixin {
   final _navBarItems = <NavBarItemData>[
     NavBarItemData('内容库', LineAwesomeIcons.home, 110, Color(0xff01b87d)),
     NavBarItemData('社区', LineAwesomeIcons.archive, 110, Color(0xff594ccf)),
@@ -56,8 +55,7 @@ class _IndexState extends State<MainPage>
 
   var exitApp = false;
 
-  late AnimationController mainAnimationCtl = AnimationController(
-      duration: const Duration(milliseconds: 450), vsync: this);
+  late AnimationController mainAnimationCtl = AnimationController(duration: const Duration(milliseconds: 450), vsync: this);
 
   @override
   void initState() {

@@ -11,14 +11,11 @@ final methodChannel = MethodChannel('lingyun_lw_channel_1');
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   if (kReleaseMode) GestureBinding.instance?.resamplingEnabled = true;
 
   runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider<DataCenter>(create: (_) => DataCenter())
-    ],
+    providers: [ChangeNotifierProvider<DataCenter>(create: (_) => DataCenter())],
     child: MyApp(),
   ));
 }
@@ -30,9 +27,7 @@ class MyApp extends StatelessWidget {
       colorScheme: ColorScheme.fromSwatch(),
       scaffoldBackgroundColor: Color.fromARGB(255, 248, 249, 251),
       cardTheme: ThemeData.light().cardTheme.copyWith(color: Colors.white),
-      popupMenuTheme: PopupMenuThemeData(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+      popupMenuTheme: PopupMenuThemeData(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
       // textTheme: ThemeData.light().textTheme.copyWith(
       //     headline3: GoogleFonts.quicksand(
       //       color: Color.fromARGB(255, 70, 76, 83),
@@ -90,12 +85,8 @@ class MyApp extends StatelessWidget {
       backgroundColor: Color.fromARGB(255, 14, 18, 27),
       scaffoldBackgroundColor: Color.fromARGB(255, 14, 18, 27),
       colorScheme: ColorScheme.fromSwatch(brightness: Brightness.dark),
-      cardTheme: ThemeData.dark()
-          .cardTheme
-          .copyWith(color: Color.fromARGB(255, 24, 28, 37)),
-      popupMenuTheme: PopupMenuThemeData(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+      cardTheme: ThemeData.dark().cardTheme.copyWith(color: Color.fromARGB(255, 24, 28, 37)),
+      popupMenuTheme: PopupMenuThemeData(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
       // textTheme: ThemeData.dark().textTheme.copyWith(
       //     headline3: GoogleFonts.quicksand(
       //       color: Colors.white,

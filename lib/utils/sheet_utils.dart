@@ -11,11 +11,9 @@ class SheetUtils {
         isDismissible: cancelable,
         isScrollControlled: true,
         clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(24.0))),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24.0))),
         builder: (ctx) {
-          return Material(
-              color: Theme.of(ctx).scaffoldBackgroundColor, child: child);
+          return Material(color: Theme.of(ctx).scaffoldBackgroundColor, child: child);
         });
   }
 }

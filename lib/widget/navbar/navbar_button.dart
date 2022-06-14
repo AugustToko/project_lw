@@ -31,8 +31,7 @@ class NavBarButton extends StatefulWidget {
   _NavBarButtonState createState() => _NavBarButtonState();
 }
 
-class _NavBarButtonState extends State<NavBarButton>
-    with SingleTickerProviderStateMixin {
+class _NavBarButtonState extends State<NavBarButton> with SingleTickerProviderStateMixin {
   late AnimationController _iconAnimController;
   bool? _wasSelected;
   double _animScale = 1;
@@ -77,7 +76,7 @@ class _NavBarButtonState extends State<NavBarButton>
           width: 60,
           child: MarqueeText(
             speed: 20,
-            text: widget.data.title,
+            text: TextSpan(text: widget.data.title),
             style: TextStyle(color: Colors.white),
           ),
         ),
@@ -91,8 +90,7 @@ class _NavBarButtonState extends State<NavBarButton>
     return Stack(
       children: <Widget>[
         Container(
-          padding: EdgeInsets.only(
-              top: paddingV, bottom: paddingV, right: paddingH, left: paddingH),
+          padding: EdgeInsets.only(top: paddingV, bottom: paddingV, right: paddingH, left: paddingH),
           //Wrap in an animated container, so changes to width & color automatically animate into place
           child: AnimatedContainer(
             alignment: Alignment.center,
@@ -105,12 +103,8 @@ class _NavBarButtonState extends State<NavBarButton>
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(24)),
                 gradient: LinearGradient(colors: [
-                  widget.isSelected
-                      ? widget.data.selectedColor
-                      : Theme.of(context).backgroundColor,
-                  widget.isSelected
-                      ? widget.data.selectedColor.withOpacity(0.5)
-                      : Theme.of(context).backgroundColor
+                  widget.isSelected ? widget.data.selectedColor : Theme.of(context).backgroundColor,
+                  widget.isSelected ? widget.data.selectedColor.withOpacity(0.5) : Theme.of(context).backgroundColor
                 ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
             //Wrap the row in a ClippedView to suppress any overflow errors if we momentarily exceed the screen size
             child: ClippedView(child: content),
@@ -139,9 +133,7 @@ class _NavBarButtonState extends State<NavBarButton>
   void _startAnimIfSelectedChanged(bool isSelected) {
     if (_wasSelected != widget.isSelected) {
       //Go forward or reverse, depending on the isSelected state
-      widget.isSelected
-          ? _iconAnimController.forward()
-          : _iconAnimController.reverse();
+      widget.isSelected ? _iconAnimController.forward() : _iconAnimController.reverse();
     }
     _wasSelected = widget.isSelected;
   }

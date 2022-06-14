@@ -9,16 +9,14 @@ class DataBaseHelper {
   late Database db;
 
   Future<void> init() async {
-    db = await openDatabase('database.db', version: 1,
-        onCreate: (database, version) async {
+    db = await openDatabase('database.db', version: 1, onCreate: (database, version) async {
       var batch = database.batch();
       batch.execute(Wallpaper.CREATE_TABLE);
       await batch.commit();
     }, onUpgrade: (database, oldVersion, newVersion) async {
       var batch = database.batch();
       for (var i = oldVersion; i < newVersion; i++) {
-        print(
-            '========================== DB VERSION ==========================');
+        print('========================== DB VERSION ==========================');
         print(i);
         // switch (i) {
         //   case 1:

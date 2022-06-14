@@ -22,10 +22,7 @@ class NavBar extends StatelessWidget {
 
   NavBar({required this.items, required this.itemTapped, this.currentIndex = 0});
 
-  NavBarItemData? get selectedItem =>
-      currentIndex >= 0 && currentIndex < items.length
-          ? items[currentIndex]
-          : null;
+  NavBarItemData? get selectedItem => currentIndex >= 0 && currentIndex < items.length ? items[currentIndex] : null;
 
   @override
   Widget build(BuildContext context) {
@@ -58,12 +55,7 @@ class NavBar extends StatelessWidget {
 
     // 创建一个包含一行的容器，然后将btn小部件添加到该行中
     return Container(
-      decoration: BoxDecoration(boxShadow: [
-        BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 32,
-            offset: Offset(0, -20))
-      ]),
+      decoration: BoxDecoration(boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 32, offset: Offset(0, -20))]),
       child: ClipRect(
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 32, sigmaY: 32),

@@ -21,18 +21,12 @@ class WallpaperFileUtil {
   /// 解包 wallpaper pack
   /// [wallpaperFile] 传入的 wallpaper 包
   /// [unpackDir] 解包路径
-  static Future<void> unpackWallpaper(
-      final File wallpaperFile, final Directory unpackDir) async {
-    if (wallpaperFile == null || unpackDir == null)
-      throw ArgumentError.notNull('wallpaperFile');
+  static Future<void> unpackWallpaper(final File wallpaperFile, final Directory unpackDir) async {
+    if (wallpaperFile == null || unpackDir == null) throw ArgumentError.notNull('wallpaperFile');
 
-    if (!wallpaperFile.path.endsWith(SUPPORTED_WALLPAPER_FORMAT))
-      throw ArgumentError(
-          '!wallpaperFile.path.endsWith(SUPPORTED_WALLPAPER_FORMAT)');
+    if (!wallpaperFile.path.endsWith(SUPPORTED_WALLPAPER_FORMAT)) throw ArgumentError('!wallpaperFile.path.endsWith(SUPPORTED_WALLPAPER_FORMAT)');
 
-    if (!wallpaperFile.existsSync() || !unpackDir.existsSync())
-      throw ArgumentError(
-          '!wallpaperFile.existsSync() || !unpackPath.existsSync()');
+    if (!wallpaperFile.existsSync() || !unpackDir.existsSync()) throw ArgumentError('!wallpaperFile.existsSync() || !unpackPath.existsSync()');
 
     final bytes = await wallpaperFile.readAsBytes();
 
@@ -58,13 +52,11 @@ class WallpaperFileUtil {
   static Wallpaper? parseWallpaperPack(final Directory directory) {
     if (!directory.existsSync()) return null;
 
-    final jsonFile = File(
-        directory.path + Platform.pathSeparator + WALLPAPER_INFO_FILE_NAME);
+    final jsonFile = File(directory.path + Platform.pathSeparator + WALLPAPER_INFO_FILE_NAME);
 
     if (!jsonFile.existsSync()) return null;
 
-    final Wallpaper wallpaper = Wallpaper.fromJson(
-        json.decode(jsonFile.readAsStringSync()) as Map<String, dynamic>);
+    final Wallpaper wallpaper = Wallpaper.fromJson(json.decode(jsonFile.readAsStringSync()) as Map<String, dynamic>);
 
     return wallpaper;
   }
@@ -72,41 +64,33 @@ class WallpaperFileUtil {
   /// 打包 wallpaper pack
   /// [wallpaperSource] 资源路径
   static Future<File> packWallpaper(final Directory wallpaperSource) async {
-    if (wallpaperSource == null) throw ArgumentError.notNull('wallpaperFile');
-    if (!wallpaperSource.existsSync())
-      throw ArgumentError('!wallpaperSource.existsSync()');
+    if (!wallpaperSource.existsSync()) throw ArgumentError('!wallpaperSource.existsSync()');
 
     final fileList = wallpaperSource.listSync(recursive: true);
 
-    final tempDir = Directory(
-        wallpaperSource.path + Platform.pathSeparator + TEMP_FOLDER_NAME);
-    tempDir.createSync();
+    final tempDir = Directory(wallpaperSource.path + Platform.pathSeparator + TEMP_FOLDER_NAME);
+    await tempDir.create();
 
     await for (final element in Stream.fromIterable(fileList)) {
-      await element.rename(tempDir.path +
-          Platform.pathSeparator +
-          FileUtils.basename(element.path));
+      await element.rename(tempDir.path + Platform.pathSeparator + FileUtils.basename(element.path));
     }
 
     final tarEncoder = TarFileEncoder();
-    tarEncoder
-        .create(wallpaperSource.path + Platform.pathSeparator + TEMP_TAR_NAME);
+    tarEncoder.create(wallpaperSource.path + Platform.pathSeparator + TEMP_TAR_NAME);
     tarEncoder.addDirectory(tempDir);
 
     final fileListNew = tempDir.listSync(recursive: true);
 
     await for (final element in Stream.fromIterable(fileListNew)) {
-      await element.rename(wallpaperSource.path +
-          Platform.pathSeparator +
-          FileUtils.basename(element.path));
+      await element.rename(wallpaperSource.path + Platform.pathSeparator + FileUtils.basename(element.path));
     }
 
-    tempDir.deleteSync();
+    await tempDir.delete();
 
-    final tarFile = File(tarEncoder.tar_path);
+    final tarFile = File(tarEncoder.tarPath);
     tarEncoder.close();
 
-    final result = brotli.encode(tarFile.readAsBytesSync());
+    final result = brotli.encode(await tarFile.readAsBytes());
 
     final pak = File(wallpaperSource.path + Platform.pathSeparator + PACK_NAME);
     if (pak.existsSync()) pak.deleteSync();
@@ -125,8 +109,7 @@ class WallpaperFileUtil {
 
     Wallpaper wallpaper;
     try {
-      wallpaper = Wallpaper.fromJson(
-          json.decode(file.readAsStringSync()) as Map<String, dynamic>);
+      wallpaper = Wallpaper.fromJson(json.decode(file.readAsStringSync()) as Map<String, dynamic>);
     } catch (e, s) {
       print(e);
       print(s);

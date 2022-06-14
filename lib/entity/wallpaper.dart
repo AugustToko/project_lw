@@ -60,17 +60,8 @@ class Wallpaper {
   /// [WallpaperType.VIEW] file (config.json) path
   final String mainFilepath;
 
-  const Wallpaper.all(
-      this.id,
-      this.wallpaperType,
-      this.name,
-      this.description,
-      this.author,
-      this.thumbnails,
-      this.tags,
-      this.versionCode,
-      this.versionName,
-      this.mainFilepath);
+  const Wallpaper.all(this.id, this.wallpaperType, this.name, this.description, this.author, this.thumbnails, this.tags, this.versionCode,
+      this.versionName, this.mainFilepath);
 
   const Wallpaper({
     required this.id,
@@ -95,13 +86,8 @@ class Wallpaper {
       name: map['name'] as String,
       description: map['description'] as String,
       author: map['author'] as String,
-      thumbnails: t is String
-          ? (json.decode(map['thumbnails'] as String) as List<dynamic>)
-              .cast<String>()
-          : (t as List<dynamic>).cast<String>(),
-      tags: map['tags'] != null
-          ? (json.decode(map['tags']) as List<dynamic>).cast<String>()
-          : [],
+      thumbnails: t is String ? (json.decode(map['thumbnails'] as String) as List<dynamic>).cast<String>() : (t as List<dynamic>).cast<String>(),
+      tags: map['tags'] != null ? (json.decode(map['tags']) as List<dynamic>).cast<String>() : [],
       versionCode: map['versionCode'] as int,
       versionName: map['versionName'] as String,
       mainFilepath: map['path'] as String,
@@ -183,9 +169,7 @@ class Wallpaper {
   }
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Wallpaper && runtimeType == other.runtimeType && id == other.id;
+  bool operator ==(Object other) => identical(this, other) || other is Wallpaper && runtimeType == other.runtimeType && id == other.id;
 
   @override
   int get hashCode => id.hashCode;
